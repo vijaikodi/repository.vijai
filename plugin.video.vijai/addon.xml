@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.video.vijai"
+version="3.0.23"
+name="vijai"
+provider-name="vijai">
+<requires>
+  <import addon="xbmc.python" version="3.0.0"/>
+  <import addon="script.module.routing" version="0.2.0"/>
+  <import addon="script.module.resolveurl" version="5.1.10"/>
+  <import addon="script.module.requests" version="2.22.0"/>
+  <import addon="script.module.t0mm0.common" version="2.1.1"/>
+  <import addon="script.module.six" version="0.0.1"/>
+</requires>
+<extension point="xbmc.python.pluginsource" library="main.py">
+  <provides>video</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+  <summary lang="en">Video Plugin</summary>
+  <description lang="en_GB">video plugin for Kodi mediacenter.</description>
+  <disclaimer lang="en_GB">The plugin only provides movies or series thats available in the internet.</disclaimer>
+  <assets>
+    <icon>icon.png</icon>
+  </assets>
+  <news>Updated with latest artwork metadata</news>
+</extension>
+</addon>
