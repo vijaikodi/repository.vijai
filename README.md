@@ -1,3 +1,14 @@
+clone this repo
+make code changes to plugin.video.vijai
+delete zips folder
+execute the rep generator.
+copy the repo zip from zip to /repo in the root
+Thats it
+
+
+
+
+
 # BASIC - How to setup for hosting on GitHub Pages
 
 In order to follow this tutorial, first fork this repository, and then clone your newly forked copy locally.
