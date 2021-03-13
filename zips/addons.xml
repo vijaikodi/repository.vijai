@@ -32,11 +32,14 @@ provider-name="vijai">
             <checksum>https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/zips/addons.xml.md5</checksum>
             <datadir zip="true">https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/zips/</datadir>
         </dir>
-        <dir>
-			<info compressed="false">https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml</info>
-			<checksum>https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml.md5</checksum>
-			<datadir zip="true">https://raw.githubusercontent.com/Gujal00/smrzips/master/zips/</datadir>
+		<dir>
+	        <info compressed="false">https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml</info>
+	        <checksum>https://raw.githubusercontent.com/Gujal00/smrzips/master/addons.xml.md5</checksum>
+	        <datadir zip="true">https://raw.githubusercontent.com/Gujal00/smrzips/master/zips/</datadir>
 		</dir>
+		<info compressed="false">https://raw.github.com/Gujal00/GujalKodiWork/master/addons.xml</info>
+		<checksum>https://raw.github.com/Gujal00/GujalKodiWork/master/addons.xml.md5</checksum>
+		<datadir zip="true">https://raw.github.com/Gujal00/GujalKodiWork/master/zips/</datadir>
     </extension>
     <extension point="xbmc.addon.metadata">
         <summary>vijai-repository</summary>
