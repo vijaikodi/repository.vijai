@@ -15,7 +15,7 @@
 },
 {
 "url": "http://4movierulz.com/category/telugu-movies-2020/",
- "title": "movierulz-Telugu",
+"title": "movierulz-Telugu",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
