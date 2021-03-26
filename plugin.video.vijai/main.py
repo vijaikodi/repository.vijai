@@ -6,6 +6,7 @@ from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
 from lib import chromevideo, embedtamilgun, vidorgnet, videobin, vup, gofile, streamtape
+import json
 
 
 def getdatacontent_dict(url,reg):
@@ -33,61 +34,84 @@ def getredirectedurl(url):
 		return r.url
 	except Exception as e:
 		Dialog().ok('XBMC', str(e))
+def loadmainlist(url,title,get_site_content_regex,get_stream_url_regex,get_nav_data_regex):
+    url = getredirectedurl(url)
+    get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+    get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
+    get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
+
 
 plugin = routing.Plugin()
 @plugin.route('/')
 def index():
-    # addDirectoryItem(plugin.handle, plugin.url_for(show_category,"https://6movierulz.com/category/tamil-movie/"), ListItem("Category One"), True)
-    # addDirectoryItem(plugin.handle, plugin.url_for(show_category, "two"), ListItem("Category Two"), True)
-    # addDirectoryItem(plugin.handle, plugin.url_for(show_directory, "/dir/two"), ListItem("Directory Two"), True)
-    movierulzurl = getredirectedurl("http://4movierulz.com")
-    # r = requests.get(url,verify=False) 
-    # movierulzurl = r.url
-    if movierulzurl:
-	    url = movierulzurl+"/category/tamil-movie/"
-	    get_site_content_regex ='<a href=\"(?P<pageurl>.*?)\"\stitle=\"(?P<title>.*?)\">\s*<img width=\"\d+\" height=\"\d+\" src=\"(?P<poster>.*?)\"'
-	    get_stream_url_regex = '<p><strong>(?P<streamtitle>.*?)<\/strong><br \/>\s+<a href=\"(?P<streamurl>.*?)\"'
-	    get_nav_data_regex = '<a href=\"(?P<navlink>.*?)\">&larr;(\s|)Older Entries'
-	    get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-	    get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-	    get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-	    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Tamil"), True)
-	    url = movierulzurl+"/bollywood-movie-free/"
-	    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Hindi"), True)
-	    url = movierulzurl+"/category/telugu-movies-2020/"
-	    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Telugu"), True)
-    url = "https://www.tubetamil.com"
-    get_site_content_regex='<div class="thumb">\s+<a\shref=\"(?P<pageurl>.*?)\"\s+title=\"(?P<title>.*?)\">\s+<img\ssrc=\"(?P<poster>.*?)\"'
-    get_nav_data_regex = '<li class="next"><a\shref=\"(?P<navlink>.*?)\"'
-    get_stream_url_regex = '<iframe\swidth=\"(.*?)\"\s+height=\"(.*?)\"\s+src=\"(?P<streamurl>.*?)\?'
-    get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-    get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-    get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tubetamil"), True)
-    url= getredirectedurl("http://tamilgun.com")
-    if url:
-	    tamilgunurl = url.replace('/tamil/','')
-	    url = tamilgunurl +'/categories/new-movies-a/'
-	    get_site_content_regex = '<img src=\" (?P<poster>.*?) \" alt=\"(?P<title>.*?)\" \/>\s+<div class=\"rocky-effect\">\s+<a href=\"(?P<pageurl>.*?)\"\s>'
-	    get_nav_data_regex = '<a class="next page-numbers" href="(?P<navlink>.*?)">'
-	    get_stream_url_regex = '<(iframe|IFRAME)(\s|.*?)(src|SRC)=\"(?P<streamurl>.*?)\"|onclick=\"window\.open\(\'(?P<streamurl1>.*?)\'|sources:\s+\[{\"file\":\"(?P<streamurl2>.*?)\"}\]'
-	    get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-	    get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-	    get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-	    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tamilgun-NewMovies"), True)
-	    url = tamilgunurl +'/categories/hd-movies/'
-	    get_site_content_regex = '<img src=\" (?P<poster>.*?) \" alt=\"(?P<title>.*?)\" \/>\s+<div class=\"rocky-effect\">\s+<a href=\"(?P<pageurl>.*?)\"\s>'
-	    get_nav_data_regex = '<a class="next page-numbers" href="(?P<navlink>.*?)">'
-	    get_stream_url_regex = '<(iframe|IFRAME)(\s|.*?)(src|SRC)=\"(?P<streamurl>.*?)\"|onclick=\"window\.open\(\'(?P<streamurl1>.*?)\'|sources:\s+\[{\"file\":\"(?P<streamurl2>.*?)\"}\]'
-	    get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-	    get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-	    get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-	    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tamilgun-HDMovies"), True)
+    response = requests.get("https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/json")
+    responsetext = response.text
+    responsetext = responsetext.replace('\n', '')
+    mainlist = json.loads(response.text)
+    for p in mainlist:
+        #loadmainlist(p['url'],p['title'],p['get_site_content_regex'],p['get_stream_url_regex'],p['get_nav_data_regex'])
+        url = getredirectedurl(p['url'])
+        url = urllib.parse.quote_plus(url)
+        get_site_content_regex = urllib.parse.quote_plus(p['get_site_content_regex'])
+        get_stream_url_regex = urllib.parse.quote_plus(p['get_stream_url_regex'])
+        get_nav_data_regex = urllib.parse.quote_plus(p['get_nav_data_regex'])
+        title = p['title']
+        addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
+
+    # print (p['title'])
+    # # addDirectoryItem(plugin.handle, plugin.url_for(show_category,"https://6movierulz.com/category/tamil-movie/"), ListItem("Category One"), True)
+    # # addDirectoryItem(plugin.handle, plugin.url_for(show_category, "two"), ListItem("Category Two"), True)
+    # # addDirectoryItem(plugin.handle, plugin.url_for(show_directory, "/dir/two"), ListItem("Directory Two"), True)
+    # movierulzurl = getredirectedurl("http://4movierulz.com")
+    # # r = requests.get(url,verify=False) 
+    # # movierulzurl = r.url
+    # if movierulzurl:
+	   #  url = movierulzurl+"/category/tamil-movie/"
+	   #  get_site_content_regex ='<a href=\"(?P<pageurl>.*?)\"\stitle=\"(?P<title>.*?)\">\s*<img width=\"\d+\" height=\"\d+\" src=\"(?P<poster>.*?)\"'
+	   #  get_stream_url_regex = '<p><strong>(?P<streamtitle>.*?)<\/strong><br \/>\s+<a href=\"(?P<streamurl>.*?)\"'
+	   #  get_nav_data_regex = '<a href=\"(?P<navlink>.*?)\">&larr;(\s|)Older Entries'
+	   #  get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+	   #  get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
+	   #  get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+	   #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Tamil"), True)
+	   #  url = movierulzurl+"/bollywood-movie-free/"
+	   #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Hindi"), True)
+	   #  url = movierulzurl+"/category/telugu-movies-2020/"
+	   #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Telugu"), True)
+    # url = "https://www.tubetamil.com"
+    # get_site_content_regex='<div class="thumb">\s+<a\shref=\"(?P<pageurl>.*?)\"\s+title=\"(?P<title>.*?)\">\s+<img\ssrc=\"(?P<poster>.*?)\"'
+    # get_nav_data_regex = '<li class="next"><a\shref=\"(?P<navlink>.*?)\"'
+    # get_stream_url_regex = '<iframe\swidth=\"(.*?)\"\s+height=\"(.*?)\"\s+src=\"(?P<streamurl>.*?)\?'
+    # get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+    # get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
+    # get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+    # addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tubetamil"), True)
+    # url= getredirectedurl("http://tamilgun.com")
+    # if url:
+	   #  tamilgunurl = url.replace('/tamil/','')
+	   #  url = tamilgunurl +'/categories/new-movies-a/'
+	   #  get_site_content_regex = '<img src=\" (?P<poster>.*?) \" alt=\"(?P<title>.*?)\" \/>\s+<div class=\"rocky-effect\">\s+<a href=\"(?P<pageurl>.*?)\"\s>'
+	   #  get_nav_data_regex = '<a class="next page-numbers" href="(?P<navlink>.*?)">'
+	   #  get_stream_url_regex = '<(iframe|IFRAME)(\s|.*?)(src|SRC)=\"(?P<streamurl>.*?)\"|onclick=\"window\.open\(\'(?P<streamurl1>.*?)\'|sources:\s+\[{\"file\":\"(?P<streamurl2>.*?)\"}\]'
+	   #  get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+	   #  get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
+	   #  get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+	   #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tamilgun-NewMovies"), True)
+	   #  url = tamilgunurl +'/categories/hd-movies/'
+	   #  get_site_content_regex = '<img src=\" (?P<poster>.*?) \" alt=\"(?P<title>.*?)\" \/>\s+<div class=\"rocky-effect\">\s+<a href=\"(?P<pageurl>.*?)\"\s>'
+	   #  get_nav_data_regex = '<a class="next page-numbers" href="(?P<navlink>.*?)">'
+	   #  get_stream_url_regex = '<(iframe|IFRAME)(\s|.*?)(src|SRC)=\"(?P<streamurl>.*?)\"|onclick=\"window\.open\(\'(?P<streamurl1>.*?)\'|sources:\s+\[{\"file\":\"(?P<streamurl2>.*?)\"}\]'
+	   #  get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+	   #  get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
+	   #  get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+	   #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tamilgun-HDMovies"), True)
     endOfDirectory(plugin.handle)
 
 
 @plugin.route('/getsitecontent/<path:url>/<get_site_content_regex>/<get_nav_data_regex>/<get_stream_url_regex>')
 def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex):
+    url = urllib.parse.unquote_plus(url)
     get_site_content_regex = urllib.parse.unquote_plus(get_site_content_regex)
     get_nav_data_regex = urllib.parse.unquote_plus(get_nav_data_regex)
     data = getdatacontent_dict(url,get_site_content_regex)
@@ -113,9 +137,6 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
 def liststreamurl(url,get_stream_url_regex):
     get_stream_url_regex = urllib.parse.unquote_plus(get_stream_url_regex)
     data = getdatacontent_dict(url,get_stream_url_regex)
-    xbmc.log ('--------------------------------------------------------------------------------------------------------------------------test')
-    xbmc.log(str(data))
-    xbmc.log(url)
     blacklists = ['goblogportal']
     for item in data:
         xbmc.log(str(item))
