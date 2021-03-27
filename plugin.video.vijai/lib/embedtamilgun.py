@@ -56,9 +56,23 @@ def getcontenttamildbox(url):
     response = requests.get(url, headers=headers)
     return response
 
+def getdatacontent(url,reg):
+    proxy_handler = urllib.request.ProxyHandler({})
+    opener = urllib.request.build_opener(proxy_handler)
+    req = urllib.request.Request(url)
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    r = opener.open(req)
+    html = r.read().decode('utf-8')
+    data = re.compile(reg).findall(html)
+    return data
 
 def resolve_embedtamilgun(url):
-    if "embed1.tamildbox" in url:
+    reg ='var\slink_play\s=\s+\[\{"file":\"(.*?)\"'
+    url = getdatacontent(url,reg)
+    if url:
+        return url[0]
+    else:
+        return None
         #xbmc.log("---------------------------------------embed1-tamildbox-----------------------------------------------------------")
 ##        if "https" in url:
 ##            url = url.replace("https","http")
@@ -66,23 +80,32 @@ def resolve_embedtamilgun(url):
 ##            url = url
 ##        else:
 ##            url = 'http:'+url
-        html = getcontent(url)
-        movieurl= re.compile("domainStream = '(.*?)'").findall(html)
-        if movieurl:
-            for tempurl in movieurl:
-                if tempurl:
-                    print(tempurl)
-                    movieurlx = tempurl.replace("hls","hls1mp4/2020")
-                    temp = getcontenttamildbox(movieurlx)
-                    id = re.compile("nimblesessionid=(.*?)&").findall(temp.text)
-                    nimble = "chunk.m3u8?nimblesessionid="
-                    nimbleid = nimble+id[0]
-                    movieurlx = movieurlx.replace("playlist.m3u8",nimbleid)
-                    return movieurlx
-        elif "domainStream = domainStream.replace('.tamildbox.tips', '.tamilgun.tv')" in html1:
-            url = url.replace('hls_vast', 'hls')
-            url = url.replace('.tamildbox.tips', '.tamilgun.tv')
-            url = url + '/playlist.m3u8'
+    #     html = getcontent(url)
+    #     movieurl= re.compile("domainStream = '(.*?)'").findall(html)
+    #     if movieurl:
+    #         for tempurl in movieurl:
+    #             if tempurl:
+    #                 print(tempurl)
+    #                 movieurlx = tempurl.replace("hls","hls1mp4/2020")
+    #                 temp = getcontenttamildbox(movieurlx)
+    #                 id = re.compile("nimblesessionid=(.*?)&").findall(temp.text)
+    #                 nimble = "chunk.m3u8?nimblesessionid="
+    #                 nimbleid = nimble+id[0]
+    #                 movieurlx = movieurlx.replace("playlist.m3u8",nimbleid)
+    #                 return movieurlx
+    #     elif "domainStream = domainStream.replace('.tamildbox.tips', '.tamilgun.tv')" in html:
+    #         url = url.replace('hls_vast', 'hls')
+    #         url = url.replace('.tamildbox.tips', '.tamilgun.tv')
+    #         url = url + '/playlist.m3u8'
 
-            return url
-    return None
+    #         return url
+    # return None
+def resolve_cdnjwplayer(url):
+    reg = '<meta name="twitter:player:stream" content=\"(.*?)\">'
+    url = getdatacontent(url,reg)
+    if url:
+        return url[0]
+    else:
+        return None
+
+

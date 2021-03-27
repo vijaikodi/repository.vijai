@@ -11,10 +11,10 @@ def getdatacontent(url,reg):
     return data
 
 def resolve_vup(url):
-    reg = "<script type='text\/javascript'>eval(.*?)\s+<\/script>"  
-    out = getdatacontent(url,reg)
-    out = unpack(out[0])
-    reg = 'sources:\s*\[{src:\s*"(?P<url>[^"]+)'
-    url = re.compile(reg).findall(out)
-    url = url[0]
-    return url
+    reg = 'sources: \[\{src: \"(.*?)\"'
+    url = getdatacontent(url,reg)
+    if url:
+        return url[0]
+    else:
+        return None
+        

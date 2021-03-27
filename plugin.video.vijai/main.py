@@ -48,16 +48,23 @@ def index():
     response = requests.get("https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/json")
     responsetext = response.text
     responsetext = responsetext.replace('\n', '')
-    mainlist = json.loads(response.text)
-    for p in mainlist:
-        #loadmainlist(p['url'],p['title'],p['get_site_content_regex'],p['get_stream_url_regex'],p['get_nav_data_regex'])
-        url = getredirectedurl(p['url'])
-        url = urllib.parse.quote_plus(url)
-        get_site_content_regex = urllib.parse.quote_plus(p['get_site_content_regex'])
-        get_stream_url_regex = urllib.parse.quote_plus(p['get_stream_url_regex'])
-        get_nav_data_regex = urllib.parse.quote_plus(p['get_nav_data_regex'])
-        title = p['title']
-        addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
+    try:
+        mainlist = json.loads(response.text)
+    except:
+        Dialog().ok('XBMC', 'Error in Json Loading')
+    if mainlist:
+        for p in mainlist:
+            #loadmainlist(p['url'],p['title'],p['get_site_content_regex'],p['get_stream_url_regex'],p['get_nav_data_regex'])
+            url = getredirectedurl(p['url'])
+            url = urllib.parse.quote_plus(url)
+            get_site_content_regex = urllib.parse.quote_plus(p['get_site_content_regex'])
+            get_stream_url_regex = urllib.parse.quote_plus(p['get_stream_url_regex'])
+            get_nav_data_regex = urllib.parse.quote_plus(p['get_nav_data_regex'])
+            title = p['title']
+            try:
+                addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
+            except:
+                Dialog().ok(title, 'Unable to load this site')
 
     # print (p['title'])
     # # addDirectoryItem(plugin.handle, plugin.url_for(show_category,"https://6movierulz.com/category/tamil-movie/"), ListItem("Category One"), True)
@@ -188,6 +195,15 @@ def resolvelink(url,source):
             Dialog().ok('XBMC', 'Unable to locate video')
     elif "embed1.tamildbox" in url:
         movieurl = embedtamilgun.resolve_embedtamilgun(url)
+        try:
+            if movieurl:
+                addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+            else:
+                Dialog().ok('XBMC', 'Unable to locate video')
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif "cdn.jwplayer" in url:
+        movieurl = embedtamilgun.resolve_cdnjwplayer(url)
         try:
             if movieurl:
                 addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
