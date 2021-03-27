@@ -7,20 +7,28 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
 },
 {
-"url": "http://4movierulz.com/bollywood-movie-free",
+"url": "http://4movierulz.com/category/telugu-movie",
+"title": "movierulz-Telugu",
+"get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
+"get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
+"get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
+ },
+{
+"url": "http://4movierulz.com/category/bollywood-movie-2021",
 "title": "movierulz-Hindi",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
 },
 {
-"url": "http://4movierulz.com/category/telugu-movies-2020",
-"title": "movierulz-Telugu",
+"url": "http://4movierulz.com/category/malayalam-movie/",
+"title": "movierulz-Malayalam",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
- },
- {
+},
+
+{
 "url": "https://tamilgun.com/categories/dubbed-movies/",
 "title": "TamilGun-DubbedMovies",
 "get_site_content_regex": "<img src=\\\" (?P<poster>.*?) \\\" alt=\\\"(?P<title>.*?)\\\" \\\/>\\s+<div class=\\\"rocky-effect\\\">\\s+<a href=\\\"(?P<pageurl>.*?)\\\"\\s>",
