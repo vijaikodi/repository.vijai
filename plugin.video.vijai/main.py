@@ -211,7 +211,7 @@ def resolvelink(url,source):
                 Dialog().ok('XBMC', 'Unable to locate video')
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
-    elif 'vidorg' in url:
+    elif 'vidorg' in url and 'movierulz' in source:
         movieurl = vidorgnet.resolve_vidorgnet(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
