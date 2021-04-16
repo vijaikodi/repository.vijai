@@ -57,7 +57,7 @@ def index():
             try:
                 #loadmainlist(p['url'],p['title'],p['get_site_content_regex'],p['get_stream_url_regex'],p['get_nav_data_regex'])
                 title = p['title']
-                url = getredirectedurl(p['url'])
+                url = p['url']
                 url = urllib.parse.quote_plus(url)
                 get_site_content_regex = urllib.parse.quote_plus(p['get_site_content_regex'])
                 get_stream_url_regex = urllib.parse.quote_plus(p['get_stream_url_regex'])
@@ -121,23 +121,24 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
     url = urllib.parse.unquote_plus(url)
     get_site_content_regex = urllib.parse.unquote_plus(get_site_content_regex)
     get_nav_data_regex = urllib.parse.unquote_plus(get_nav_data_regex)
-    data = getdatacontent_dict(url,get_site_content_regex)
-    nav = getdatacontent_dict(url,get_nav_data_regex)
-    for item in data:
-        listitem = xbmcgui.ListItem(item['title'])
-        #ListItem.setLabel(item['title'])
-        listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
-        #addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), ListItem(label=item['title'],icon=item['poster']),True)
-        addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), listitem,True)
-        xbmc.log(item['poster'])
-        xbmc.log(item['title'])
-    if nav:
-        get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-        get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-        nav = nav[0]
-        if nav['navlink']:
-            nav = nav['navlink']
-            addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
+    try:
+        data = getdatacontent_dict(url,get_site_content_regex)
+        nav = getdatacontent_dict(url,get_nav_data_regex)
+        for item in data:
+            listitem = xbmcgui.ListItem(item['title'])
+            #ListItem.setLabel(item['title'])
+            listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
+            #addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), ListItem(label=item['title'],icon=item['poster']),True)
+            addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), listitem,True)
+        if nav:
+            get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+            get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+            nav = nav[0]
+            if nav['navlink']:
+                nav = nav['navlink']
+                addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
+    except:
+        Dialog().ok('Loading site content', 'Unable to load this site')
     endOfDirectory(plugin.handle)
 
 @plugin.route('/liststreamurl/<path:url>/<get_stream_url_regex>')
