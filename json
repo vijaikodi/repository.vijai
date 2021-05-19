@@ -70,7 +70,7 @@
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
  },
   {
-"url": "http://tamilyogi.com/category/tamil-web-series/",
+"url": "http://tamilyogi.best/category/tamil-web-series/",
 "title": "TamilYogi-WebSeries",
 "get_site_content_regex": "<div class=\"cover\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"><img src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"",
