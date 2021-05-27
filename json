@@ -56,7 +56,7 @@
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
  }, 
  {
-"url": "http://tamilyogi.com/category/tamilyogi-bluray-movies/",
+"url": "http://tamilyogi.best/category/tamilyogi-bluray-movies/",
 "title": "TamilYogi-HDMovies",
 "get_site_content_regex": "<div class=\"cover\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"><img src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"",
