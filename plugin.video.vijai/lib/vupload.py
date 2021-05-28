@@ -9,14 +9,22 @@ def getdatacontent(url,reg):
     html = r.read().decode('utf-8')
     data = re.compile(reg).findall(html)
     return data
+def getcontent(url):
+    proxy_handler = urllib.request.ProxyHandler({})
+    opener = urllib.request.build_opener(proxy_handler)
+    req = urllib.request.Request(url)
+    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    r = opener.open(req)
+    html = r.read().decode('utf-8')
+    return html
 
-def resolve_vup(url):
-    reg = 'sources: \[\{src: \"(.*?)\"'
-    url = getdatacontent(url,reg)
-    if url:
-        xbmc.log('-----------------vup url-------------------------------------------------')
-        xbmc.log(url[0])
-        return url[0]
+def resolve_vupload(url):
+    html = getcontent(url)
+    html = unpack(html)
+    reg = 'src:\"(.*?)\"'
+    data = re.compile(reg).findall(html)
+    if data[1]:
+        return data[1]
     else:
         return None
         
