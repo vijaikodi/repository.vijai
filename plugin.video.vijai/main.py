@@ -5,7 +5,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs
 import json
 
 
@@ -255,10 +255,14 @@ def resolvelink(url,source):
     #     except:
     #         Dialog().ok('XBMC', 'Unable to locate video')
     elif 'etcscrs' in url and 'movierulz' in source:
-        movieurl = streamtape.resolve_streamtape(url)
-        try:
-            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
-        except:
+        movieurl = etcscrs.resolve_etcscrs(url)
+        if 'streamtape' in movieurl:
+            movieurl = streamtape.resolve_streamtape(movieurl)
+            try:
+                addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+            except:
+                Dialog().ok('XBMC', 'Unable to locate video')
+        else:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'etcsrs' in url and 'movierulz' in source:
         #mixdrop link

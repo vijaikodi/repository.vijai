@@ -19,12 +19,14 @@ def getcontent(url):
     return html
 
 def resolve_vupload(url):
-    html = getcontent(url)
-    html = unpack(html)
-    reg = 'src:\"(.*?)\"'
-    data = re.compile(reg).findall(html)
-    if data[1]:
-        return data[1]
-    else:
-        return None
-        
+    try:
+        html = getcontent(url)
+        html = unpack(html)
+        reg = 'src:\"(.*?)\"'
+        data = re.compile(reg).findall(html)
+        if data[1]:
+            return data[1]
+        else:
+            return None
+    except:
+        return None    
