@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.vijai"
-version="3.0.30"
+version="3.0.31"
 name="vijai"
 provider-name="vijai">
 <requires>
