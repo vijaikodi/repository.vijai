@@ -13,11 +13,12 @@ def getdatacontent(url,reg):
 def resolve_gofile(url):
     url = url.split('/')
     param =  url[-1]
-    apiurl = "https://api.gofile.io/getUpload?c="+param
+    apiurl = "https://api.gofile.io/getFolder?folderId="+param
+    r = requests.get(apiurl)
     reg = '"link":\"(.*?)\"'
-    url = getdatacontent(apiurl,reg)
-    if url:
-        return url[0]
+    data = re.compile(reg).findall(r.text)
+    if data:
+        return data[0]
     else:
         return None
         

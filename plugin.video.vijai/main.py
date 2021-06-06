@@ -119,6 +119,7 @@ def index():
 @plugin.route('/getsitecontent/<path:url>/<get_site_content_regex>/<get_nav_data_regex>/<get_stream_url_regex>')
 def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex):
     url = urllib.parse.unquote_plus(url)
+    url = getredirectedurl(url)
     get_site_content_regex = urllib.parse.unquote_plus(get_site_content_regex)
     get_nav_data_regex = urllib.parse.unquote_plus(get_nav_data_regex)
     try:
