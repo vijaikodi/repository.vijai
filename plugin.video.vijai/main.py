@@ -5,7 +5,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam
 import json
 
 
@@ -195,6 +195,13 @@ def resolvelink(url,source):
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'arivakam' in url:
+        movieurl = arivakam.resolve_arivakam(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+
     elif 'vidmx' in url:
         movieurl = vidmx.resolve_vidmx(url)
         try:
