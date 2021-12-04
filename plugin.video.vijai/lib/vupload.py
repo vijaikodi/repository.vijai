@@ -21,11 +21,13 @@ def getcontent(url):
 def resolve_vupload(url):
     try:
         html = getcontent(url)
-        html = unpack(html)
-        reg = 'src:\"(.*?)\"'
+        # html = unpack(html)
+        reg = 'src:\s\"(.*?)\"'
         data = re.compile(reg).findall(html)
-        if data[1]:
-            return data[1]
+        xbmc.log("------------------------------------------------------------------------------")
+        xbmc.log(str(data))
+        if data[0]:
+            return data[0]
         else:
             return None
     except:
