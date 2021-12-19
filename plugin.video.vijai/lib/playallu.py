@@ -1,4 +1,4 @@
-import urllib.request, urllib.error, urllib.parse,re,xbmc,urllib.request,urllib.parse,urllib.error,requests
+import urllib.request, urllib.error, urllib.parse,re,xbmc,urllib.request,urllib.parse,urllib.error,requests,xbmcplugin,xbmcgui,xbmcvfs
 import resolveurl as urlresolver
 from .unpack import unpack
 
@@ -37,6 +37,17 @@ def get_redirect_url(url, headers={}):
     response = urllib.request.urlopen(request)
     return response.geturl()
 
+def play_video(path):
+    """
+    Play a video by the provided path.
+    :param path: Fully-qualified video URL
+    :type path: str
+    """
+    # Create a playable item with a path to play.
+    play_item = xbmcgui.ListItem(path=path)
+    # Pass the item to the Kodi player.
+    xbmcplugin.setResolvedUrl(plugin.handle, True, listitem=play_item)
+
 
 def resolve_playallu(url):
     reg = 'idfile\s=\s\"(.*?)\";\s+var\sidUser\s=\s\"(.*?)\";'
@@ -72,7 +83,19 @@ def resolve_playallu(url):
 
     response = requests.post(url, headers=headers, data=data)
     data = response.text
-    reg = '],\[\"(.*?)\"'
+    reg = '\"(.*?)\"'
     data = re.compile(reg).findall(data)
-    streamurl = 'https://plhq01.ggccallu001.xyz/stream/v5/'+str(data[0])+'.html'
-    return streamurl
+    data =  (data[7:])
+    fpath = xbmcvfs.translatePath('special://temp')
+    fpath = fpath + "test.m3u8"
+    f = open(fpath, "w")
+    f.write("#EXTM3U\n")
+    f.write("#EXT-X-VERSION:3\n")
+    f.write("#EXT-X-TARGETDURATION:6\n")
+    f.write("#EXT-X-PLAYLIST-TYPE:VOD\n")
+    for line in data:
+        f.write("#EXTINF:6,\n")
+        f.write("https://plhq01.ggccallu001.xyz/stream/v5/"+line+".html\n")
+    f.write("#EXT-X-ENDLIST\n")
+    f.close()
+    return fpath

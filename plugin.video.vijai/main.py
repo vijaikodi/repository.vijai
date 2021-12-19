@@ -6,7 +6,7 @@ from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
 from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu
-import json
+import json,os,xbmcvfs
 
 
 def getdatacontent_dict(url,reg):
