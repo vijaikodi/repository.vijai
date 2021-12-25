@@ -5,7 +5,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs
 import json,os,xbmcvfs
 
 
@@ -197,6 +197,24 @@ def resolvelink(url,source):
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'arivakam' in url:
         movieurl = arivakam.resolve_arivakam(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'myfeminist' in url:
+        movieurl = myfeminist.resolve_myfeminist(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'downscrs' in url or 'downsrs' in url:
+        movieurl = downscrs.resolve_downscrs(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'send.cm' in url:
+        movieurl = sendcm.resolve_sendcm(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.vijai"
-version="3.0.37"
+version="3.0.38"
 name="vijai"
 provider-name="vijai">
 <requires>
@@ -20,6 +20,7 @@ provider-name="vijai">
   <assets>
     <icon>icon.png</icon>
   </assets>
-  <news>Updated with latest artwork metadata</news>
+  <news>v3.0.38 (2021-12-25)
+    - Updated Movierulz resolver</news>
 </extension>
 </addon>
