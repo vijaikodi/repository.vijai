@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.vijai"
-version="3.0.39"
+version="3.0.40"
 name="vijai"
 provider-name="vijai">
 <requires>
@@ -20,10 +20,7 @@ provider-name="vijai">
   <assets>
     <icon>icon.png</icon>
   </assets>
-  <news>v3.0.38 (2021-12-25)
-    - Updated Movierulz resolver
-	v3.0.39 (2022-01-08)
-    - Updated Arivagam resolve url
-  </news>
+  <news>v3.0.40 (2022-01-08)
+    - Updated Arivagam resolve url</news>
 </extension>
 </addon>
