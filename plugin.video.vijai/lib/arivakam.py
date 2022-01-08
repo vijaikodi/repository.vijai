@@ -2,6 +2,9 @@ import urllib.request, urllib.error, urllib.parse,re,xbmc,urllib.request,urllib.
 from urllib.parse import urlparse
 from .unpack import unpack
 from lib import playallu
+
+
+
 def getdatacontent_dict(url,reg):
     proxy_handler = urllib.request.ProxyHandler({})
     opener = urllib.request.build_opener(proxy_handler)
@@ -13,12 +16,8 @@ def getdatacontent_dict(url,reg):
     data = [m.groupdict() for m in r.finditer(html)]
     return data
 def getdatacontent(url,reg):
-    proxy_handler = urllib.request.ProxyHandler({})
-    opener = urllib.request.build_opener(proxy_handler)
-    req = urllib.request.Request(url)
-    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
-    r = opener.open(req)
-    html = r.read().decode('utf-8')
+    resp = requests.get(url, verify=False)
+    html = resp.text
     data = re.compile(reg).findall(html)
     return data
 def getredirectedurl(url):
@@ -52,18 +51,15 @@ def getredirectedurl(url):
 #         return None    
 
 def resolve_arivakam(url):
-    try:
-        reg = '"file":\"(.*?)\"'
+    reg = '"file":\"(.*?)\"'
+    resp = getdatacontent(url,reg)
+    if resp:
+        link = resp[0]
+    else:
+        reg = '<iframe id="embedvideo" src=\"(.*?)\"'
         resp = getdatacontent(url,reg)
         if resp:
             link = resp[0]
-        else:
-            reg = '<iframe id="embedvideo" src=\"(.*?)\"'
-            resp = getdatacontent(url,reg)
-            if resp:
-                link = resp[0]
-                movieurl = playallu.resolve_playallu(link)
-                link = movieurl
-        return link
-    except:
-        return None
+            movieurl = playallu.resolve_playallu(link)
+            link = movieurl
+    return link
