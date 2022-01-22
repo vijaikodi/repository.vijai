@@ -1,6 +1,7 @@
 import urllib.request, urllib.error, urllib.parse,re,urllib.request,urllib.parse,urllib.error,requests,xbmc
 import resolveurl as urlresolver
 from .unpack import unpack
+from xbmcgui import ListItem, Dialog
 
 def getdatacontent_dict(url,reg):
     proxy_handler = urllib.request.ProxyHandler({})
@@ -70,18 +71,28 @@ def resolve_downscrs(url):
                 return link
             if re.search('streamtape.com/e', link):
                 url = link+"/"
-                movieurl = urlresolver.HostedMediaFile(url)
-                movieurl = movieurl.resolve()
+                try:
+                    movieurl = urlresolver.HostedMediaFile(url)                
+                    movieurl = movieurl.resolve()
+                    return movieurl
+                except Exception as e:
+                    Dialog().ok('XBMC', str(e)) 
                 xbmc.log(str(movieurl))
-                return movieurl
             if 'streamtape' in link:
                 link = link.split('/')
-                link = link [-1]
+                if link[-1]:
+                    link = link[-1]
+                else:
+                    link = link[-2]
                 url = "https://streamtape.com/e/"+link+"/"
                 xbmc.log(url)
-                movieurl = urlresolver.HostedMediaFile(url)
-                movieurl = movieurl.resolve()
-                return movieurl
+                try:
+                    movieurl = urlresolver.HostedMediaFile(url) 
+                    movieurl = movieurl.resolve()
+                    return movieurl
+                except Exception as e:
+                    Dialog().ok('XBMC', str(e))  
+                
 
 
 
