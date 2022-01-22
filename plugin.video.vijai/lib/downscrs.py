@@ -1,4 +1,4 @@
-import urllib.request, urllib.error, urllib.parse,re,xbmc,urllib.request,urllib.parse,urllib.error,requests
+import urllib.request, urllib.error, urllib.parse,re,urllib.request,urllib.parse,urllib.error,requests,xbmc
 import resolveurl as urlresolver
 from .unpack import unpack
 
@@ -50,10 +50,11 @@ def get_redirect_url(url, headers={}):
 #     return movieurl
 
 def resolve_downscrs(url):
-    xbmc.log('-----------------------------------------------------streamtape----------------------------------')
+    xbmc.log('----------------------reolve downscrs -------------------------------------------------------------')
     reg = '<iframe\sloading=\"lazy\"\ssrc=\"(.*?)\"|href=\"(.*?)\"><strong>(.*?)<\/strong>'
     link = getdatacontent(url,reg)
     links = link[0]
+    xbmc.log(str(links))
     if links:
         for link in links:
             if 'ncdnstm' in link:
@@ -67,10 +68,17 @@ def resolve_downscrs(url):
                 link = link[0]
                 link = link.replace('\\','')
                 return link
+            if re.search('streamtape.com/e', link):
+                url = link+"/"
+                movieurl = urlresolver.HostedMediaFile(url)
+                movieurl = movieurl.resolve()
+                xbmc.log(str(movieurl))
+                return movieurl
             if 'streamtape' in link:
                 link = link.split('/')
-                link = link [-2]
+                link = link [-1]
                 url = "https://streamtape.com/e/"+link+"/"
+                xbmc.log(url)
                 movieurl = urlresolver.HostedMediaFile(url)
                 movieurl = movieurl.resolve()
                 return movieurl

@@ -167,8 +167,10 @@ def liststreamurl(url,get_stream_url_regex):
 @plugin.route('/resolvelink/<path:url>/<source>')
 #source variable is used for resolving custom resolver coming from source site ex: videobin.co from movierulz can be routed particular if loop, the rest will be resolved by urlresolver
 def resolvelink(url,source):
+    xbmc.log('-----------------------------------------------------streamtape resolvelink----------------------------------')
     url = urllib.parse.unquote_plus(url)
     source = urllib.parse.unquote_plus(source)
+    xbmc.log(url)
     play_item = ListItem('click to play the link')
     play_item.setInfo( type="Video", infoLabels=None)
     play_item.setProperty('IsPlayable', 'true')
@@ -207,7 +209,7 @@ def resolvelink(url,source):
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
-    elif 'downscrs' in url or 'downsrs' in url:
+    elif 'downscrs' in url or 'downsrs' in url or 'downsscrs' in url or 'downssrs' in url:
         movieurl = downscrs.resolve_downscrs(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
