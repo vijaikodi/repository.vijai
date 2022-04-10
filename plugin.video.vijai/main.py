@@ -19,6 +19,7 @@ def getdatacontent_dict(url,reg):
     r = re.compile(reg)
     data = [m.groupdict() for m in r.finditer(html)]
     return data
+
 def getdatacontent(url,reg):
     proxy_handler = urllib.request.ProxyHandler({})
     opener = urllib.request.build_opener(proxy_handler)
@@ -145,12 +146,13 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
 @plugin.route('/liststreamurl/<path:url>/<get_stream_url_regex>')
 def liststreamurl(url,get_stream_url_regex):
     get_stream_url_regex = urllib.parse.unquote_plus(get_stream_url_regex)
+    xbmc.log('-----------------------------------------------------Tamilgun resolvelink----------------------------------')
+    xbmc.log(get_stream_url_regex)
     data = getdatacontent_dict(url,get_stream_url_regex)
     blacklists = ['goblogportal']
     for item in data:
         xbmc.log(str(item))
         for key, value in list(item.items()):
-
             if 'streamurl'in key:
                 if value:
                     for blacklist in blacklists:
@@ -159,6 +161,19 @@ def liststreamurl(url,get_stream_url_regex):
                         else:
                             streamurl = urllib.parse.quote_plus(value)
                             title = value.split('/')
+                            title = title[2]+'-Link'
+                            url = urllib.parse.quote_plus(url)
+                            addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+            if 'unescape'in key:
+                if value:
+                    linkcode = urllib.parse.unquote_plus(value)
+                    if "iframe src=" in linkcode:
+                        sources = re.findall('<iframe.+?src="([^"]+)', linkcode)
+                        for source in sources:
+                            xbmc.log('-----------------------------------------------------Tamilgun resolvelink1----------------------------------')
+                            xbmc.log(source)
+                            streamurl = urllib.parse.quote_plus(source)
+                            title = source.split('/')
                             title = title[2]+'-Link'
                             url = urllib.parse.quote_plus(url)
                             addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
