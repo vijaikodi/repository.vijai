@@ -45,7 +45,7 @@
 "url": "https://tamilgun.com/categories/hd-movies/",
 "title": "TamilGun-HDMovies",
 "get_site_content_regex": "<img src=\\\" (?P<poster>.*?) \\\" alt=\\\"(?P<title>.*?)\\\" \\\/>\\s+<div class=\\\"rocky-effect\\\">\\s+<a href=\\\"(?P<pageurl>.*?)\\\"\\s>",
-"get_stream_url_regex": "unescape\('([^']+)|<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"|onclick=\\\"window\\.open\\(\\'(?P<streamurl1>.*?)\\'|sources:\\s+\\[{\\\"file\\\":\\\"(?P<streamurl2>.*?)\\\"}\\]",
+"get_stream_url_regex": "unescape\\(\\'([^\\']+)|<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"|onclick=\\\"window\\.open\\(\\'(?P<streamurl1>.*?)\\'|sources:\\s+\\[{\\\"file\\\":\\\"(?P<streamurl2>.*?)\\\"}\\]",
 "get_nav_data_regex": "<a class=\"next page-numbers\" href=\"(?P<navlink>.*?)\">"
  },
  {
