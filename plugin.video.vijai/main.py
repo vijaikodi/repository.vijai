@@ -31,8 +31,10 @@ def getdatacontent(url,reg):
     return data
 def getredirectedurl(url):
     try:
-        r= requests.get(url,verify=False)
-        return r.url
+        url = urllib.parse.urlparse(url)
+        url = url._replace(netloc=urllib.parse.urlparse((requests.get('https://'+url.netloc).url)).netloc)
+        url = urllib.parse.urlunparse(url)
+        return url
     except Exception as e:
         Dialog().ok('XBMC', str(e))
 def loadmainlist(url,title,get_site_content_regex,get_stream_url_regex,get_nav_data_regex):
@@ -120,64 +122,87 @@ def index():
 @plugin.route('/getsitecontent/<path:url>/<get_site_content_regex>/<get_nav_data_regex>/<get_stream_url_regex>')
 def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex):
     url = urllib.parse.unquote_plus(url)
+    xbmc.log(url)
     url = getredirectedurl(url)
+    xbmc.log('----------------------------------------------Entering getsitecontent---------------------------------------------------')
+    xbmc.log(url)
     get_site_content_regex = urllib.parse.unquote_plus(get_site_content_regex)
     get_nav_data_regex = urllib.parse.unquote_plus(get_nav_data_regex)
-    try:
-        data = getdatacontent_dict(url,get_site_content_regex)
-        nav = getdatacontent_dict(url,get_nav_data_regex)
-        for item in data:
-            listitem = xbmcgui.ListItem(item['title'])
-            #ListItem.setLabel(item['title'])
-            listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
-            #addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), ListItem(label=item['title'],icon=item['poster']),True)
-            addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), listitem,True)
-        if nav:
-            get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-            get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-            nav = nav[0]
-            if nav['navlink']:
-                nav = nav['navlink']
-                addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
-    except:
-        Dialog().ok('Loading site content', 'Unable to load this site')
+    data = getdatacontent_dict(url,get_site_content_regex)
+    nav = getdatacontent_dict(url,get_nav_data_regex)
+    for item in data:
+        listitem = xbmcgui.ListItem(item['title'])
+        #ListItem.setLabel(item['title'])
+        listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
+        #addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), ListItem(label=item['title'],icon=item['poster']),True)
+        addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), listitem,True)
+    if nav:
+        get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+        get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+        nav = nav[0]
+        if nav['navlink']:
+            nav = nav['navlink']
+            addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
     endOfDirectory(plugin.handle)
+    # try:
+    #     data = getdatacontent_dict(url,get_site_content_regex)
+    #     nav = getdatacontent_dict(url,get_nav_data_regex)
+    #     for item in data:
+    #         listitem = xbmcgui.ListItem(item['title'])
+    #         #ListItem.setLabel(item['title'])
+    #         listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
+    #         #addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), ListItem(label=item['title'],icon=item['poster']),True)
+    #         addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), listitem,True)
+    #     if nav:
+    #         get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
+    #         get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
+    #         nav = nav[0]
+    #         if nav['navlink']:
+    #             nav = nav['navlink']
+    #             addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
+    # except:
+    #     Dialog().ok('Loading site content', 'Unable to load this site')
+    # endOfDirectory(plugin.handle)
 
 @plugin.route('/liststreamurl/<path:url>/<get_stream_url_regex>')
 def liststreamurl(url,get_stream_url_regex):
     get_stream_url_regex = urllib.parse.unquote_plus(get_stream_url_regex)
     xbmc.log('-----------------------------------------------------Tamilgun resolvelink----------------------------------')
     xbmc.log(get_stream_url_regex)
-    data = getdatacontent_dict(url,get_stream_url_regex)
-    blacklists = ['goblogportal']
-    for item in data:
-        xbmc.log(str(item))
-        for key, value in list(item.items()):
-            if 'streamurl'in key:
-                if value:
-                    for blacklist in blacklists:
-                        if blacklist in value:
-                            pass
-                        else:
-                            streamurl = urllib.parse.quote_plus(value)
-                            title = value.split('/')
-                            title = title[2]+'-Link'
-                            url = urllib.parse.quote_plus(url)
-                            addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
-            if 'unescape'in key:
-                if value:
-                    linkcode = urllib.parse.unquote_plus(value)
-                    if "iframe src=" in linkcode:
-                        sources = re.findall('<iframe.+?src="([^"]+)', linkcode)
-                        for source in sources:
-                            xbmc.log('-----------------------------------------------------Tamilgun resolvelink1----------------------------------')
-                            xbmc.log(source)
-                            streamurl = urllib.parse.quote_plus(source)
-                            title = source.split('/')
-                            title = title[2]+'-Link'
-                            url = urllib.parse.quote_plus(url)
-                            addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
-    endOfDirectory(plugin.handle)
+    try:
+        data = getdatacontent_dict(url,get_stream_url_regex)
+        blacklists = ['goblogportal']
+        for item in data:
+            xbmc.log(str(item))
+            for key, value in list(item.items()):
+                if 'streamurl'in key:
+                    if value:
+                        for blacklist in blacklists:
+                            if blacklist in value:
+                                pass
+                            else:
+                                streamurl = urllib.parse.quote_plus(value)
+                                title = value.split('/')
+                                title = title[2]+'-Link'
+                                url = urllib.parse.quote_plus(url)
+                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+                if 'unescape'in key:
+                    if value:
+                        linkcode = urllib.parse.unquote_plus(value)
+                        if "iframe src=" in linkcode:
+                            sources = re.findall('<iframe.+?src="([^"]+)', linkcode)
+                            for source in sources:
+                                xbmc.log('-----------------------------------------------------Tamilgun resolvelink1----------------------------------')
+                                xbmc.log(source)
+                                streamurl = urllib.parse.quote_plus(source)
+                                title = source.split('/')
+                                title = title[2]+'-Link'
+                                url = urllib.parse.quote_plus(url)
+                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+        endOfDirectory(plugin.handle)
+    except:
+        endOfDirectory(plugin.handle)
+        Dialog().ok('Loading site content', 'Unable to load this site')
 
 @plugin.route('/resolvelink/<path:url>/<source>')
 #source variable is used for resolving custom resolver coming from source site ex: videobin.co from movierulz can be routed particular if loop, the rest will be resolved by urlresolver
@@ -236,7 +261,10 @@ def resolvelink(url,source):
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
+    
     elif 'playallu' in url:
+        if 'tamilgun' in source:
+            url = url.replace('\/','/')
         movieurl = playallu.resolve_playallu(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
@@ -265,6 +293,12 @@ def resolvelink(url,source):
                 addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
             else:
                 Dialog().ok('XBMC', 'Unable to locate video')
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'vimeo' in url and 'tamilgun' in source:
+        movieurl = embedtamilgun.resolve_vimeo(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'vidorg' in url and 'movierulz' in source:

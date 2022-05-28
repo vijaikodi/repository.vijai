@@ -108,4 +108,34 @@ def resolve_cdnjwplayer(url):
     else:
         return None
 
+def resolve_vimeo(url):
+    url = url.replace('\/','/')
+    xbmc.log('-------------------------------Entering vimeo---------------------------------------------------------------------')
+    xbmc.log(url)
+    # headers = {
+    # 'Accept': '*/*',
+    # 'Accept-Language': 'en-US,en;q=0.9',
+    # 'Connection': 'keep-alive',
+    # 'Origin': 'https://play.arivakam.net',
+    # 'Referer': 'https://play.arivakam.net/',
+    # 'Sec-Fetch-Dest': 'empty',
+    # 'Sec-Fetch-Mode': 'cors',
+    # 'Sec-Fetch-Site': 'cross-site',
+    # 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36',
+    # 'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
+    # 'sec-ch-ua-mobile': '?0',
+    # 'sec-ch-ua-platform': '"Windows"',
+    # }
+    # response = requests.get(url, headers=headers,allow_redirects=False)
+    # xbmc.log('-------------------------------Entering vimeo---------------------------------------------------------------------')
+    # url = response.headers['Location']
+    # response = requests.get(url)
+    # response = response.text
+    # xbmc.log(response)
+    # data = re.compile('AUDIO=\"audio-high\"\s+(.*?)\s+').findall(response)
+    if url:
+        return url
+    else:
+        return None
+
 
