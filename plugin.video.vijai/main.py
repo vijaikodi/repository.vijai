@@ -32,7 +32,7 @@ def getdatacontent(url,reg):
 def getredirectedurl(url):
     try:
         url = urllib.parse.urlparse(url)
-        url = url._replace(netloc=urllib.parse.urlparse((requests.get('https://'+url.netloc).url)).netloc)
+        url = url._replace(netloc=urllib.parse.urlparse((requests.get(url.scheme+'://'+url.netloc).url)).netloc)
         url = urllib.parse.urlunparse(url)
         return url
     except Exception as e:
@@ -207,7 +207,6 @@ def liststreamurl(url,get_stream_url_regex):
 @plugin.route('/resolvelink/<path:url>/<source>')
 #source variable is used for resolving custom resolver coming from source site ex: videobin.co from movierulz can be routed particular if loop, the rest will be resolved by urlresolver
 def resolvelink(url,source):
-    xbmc.log('-----------------------------------------------------streamtape resolvelink----------------------------------')
     url = urllib.parse.unquote_plus(url)
     source = urllib.parse.unquote_plus(source)
     xbmc.log(url)
@@ -238,6 +237,9 @@ def resolvelink(url,source):
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'arivakam' in url:
+        if 'tamilgun' in source:
+            url = url.replace('\/','/')
+            url = url[:-1]
         movieurl = arivakam.resolve_arivakam(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
