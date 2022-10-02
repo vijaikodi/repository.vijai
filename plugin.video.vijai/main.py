@@ -5,7 +5,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr
 import json,os,xbmcvfs
 
 
@@ -29,6 +29,7 @@ def getdatacontent(url,reg):
     html = r.read().decode('utf-8')
     data = re.compile(reg).findall(html)
     return data
+
 def getredirectedurl(url):
     try:
         url = urllib.parse.urlparse(url)
@@ -37,6 +38,7 @@ def getredirectedurl(url):
         return url
     except Exception as e:
         Dialog().ok('XBMC', str(e))
+
 def loadmainlist(url,title,get_site_content_regex,get_stream_url_regex,get_nav_data_regex):
     url = getredirectedurl(url)
     get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
@@ -257,6 +259,18 @@ def resolvelink(url,source):
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'downlscr' in url:
+        movieurl = downlscr.resolve_downlscr(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'downlsr' in url:
+        movieurl = downlsr.resolve_downlsr(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
     elif 'send.cm' in url:
         movieurl = sendcm.resolve_sendcm(url)
         try:
@@ -275,6 +289,12 @@ def resolvelink(url,source):
 
     elif 'vidmx' in url:
         movieurl = vidmx.resolve_vidmx(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'vembx' in url:
+        movieurl = vembx.resolve_vembx(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
