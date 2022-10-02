@@ -13,11 +13,9 @@ def resolve_downlsr(url):
     reg = 'class=\"main-button dlbutton\" href=\"(.*?)\"'
     streamurl = getdatacontent(url,reg)
     url = streamurl[0]
-    print (url)
     reg = "document\.getElementById\(\'norobotlink\'\)\.innerHTML\s(.*?)\.substring"
     tempurl = getdatacontent(url,reg)
     tempurl = tempurl[0]
-    print (tempurl)
     reg = "id=(.*?)&expires=(.*?)&ip=(.*?)&token=(.*?)'"
     r = re.compile(reg)
     data = re.compile(reg).findall(tempurl)
