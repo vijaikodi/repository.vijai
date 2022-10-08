@@ -35,7 +35,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://tamilgun.bio/categories/dubbed-movies/",
+"url": "https://tamilgun.bio/video-category/dubbed-movies/",
 "title": "TamilGun-DubbedMovies",
 "get_site_content_regex": "<img src=\\\" (?P<poster>.*?) \\\" alt=\\\"(?P<title>.*?)\\\" \\\/>\\s+<div class=\\\"rocky-effect\\\">\\s+<a href=\\\"(?P<pageurl>.*?)\\\"\\s>",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"|onclick=\\\"window\\.open\\(\\'(?P<streamurl1>.*?)\\'|sources:\\s+\\[{\\\"file\\\":\\\"(?P<streamurl2>.*?)\\\"}\\]",
