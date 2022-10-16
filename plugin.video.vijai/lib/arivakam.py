@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from .unpack import unpack
 from lib import playallu
 from xbmcgui import ListItem, Dialog
+import resolveurl as urlresolver
 
 def getcontent(url):
     proxy_handler = urllib.request.ProxyHandler({})
@@ -101,15 +102,20 @@ def resolve_arivakam(url):
                 }
                 #response = requests.get(url, headers=headers)
                 reg = "\"avc_url\":\"(.*?)\""
-                url = getdatacontent(url,reg)
+                tempurl = getdatacontent(url,reg)
                 #url = re.compile(reg).findall(response)
-                #xbmc.log('------------------------------------------ENtering Arivakam------------------------------------------------------------------')
+                xbmc.log('------------------------------------------ENtering Arivakam------------------------------------------------------------------')
                 ##xbmc.log(str(response))
-                #xbmc.log(str(url))
-                if url:
-                    url = url[2]
+                xbmc.log(str(tempurl))
+                if tempurl:
+                    url = tempurl[2]
                     return url
                 else:
+                    xbmc.log('------------------------------------------ENtering Arivakam 2 ------------------------------------------------------------------')
+                    try:
+                        return url
+                    except:
+                        Dialog().ok('XBMC', 'Unable to locate video')
                     return None
             if 'cdntest.diebutx' in url:
                 if url:
