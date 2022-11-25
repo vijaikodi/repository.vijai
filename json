@@ -2,6 +2,7 @@
 {
 "url": "https://ww8.7movierulz.sk/category/tamil-movie",
 "title": "movierulz-Tamil",
+"content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
@@ -9,6 +10,7 @@
 {
 "url": "https://ww8.7movierulz.sk/category/telugu-movie",
 "title": "movierulz-Telugu",
+"content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
@@ -16,6 +18,7 @@
 {
 "url": "https://ww8.7movierulz.sk/category/bollywood-movie-2021",
 "title": "movierulz-Hindi",
+"content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
@@ -23,6 +26,7 @@
 {
 "url": "https://ww8.7movierulz.sk/category/malayalam-movie/",
 "title": "movierulz-Malayalam",
+"content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
@@ -30,6 +34,7 @@
 {
 "url": "https://ww8.7movierulz.sk/category/hollywood-movie-2020/",
 "title": "movierulz-Hollywood",
+"content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\">&larr;(\\s|)Older Entries"
@@ -37,6 +42,7 @@
 {
 "url": "https://tamilgun.bio/video-category/dubbed-movies/",
 "title": "TamilGun-DubbedMovies",
+"content_type":"Normal",
 "get_site_content_regex": "<img src=\\\" (?P<poster>.*?) \\\" alt=\\\"(?P<title>.*?)\\\" \\\/>\\s+<div class=\\\"rocky-effect\\\">\\s+<a href=\\\"(?P<pageurl>.*?)\\\"\\s>",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"|onclick=\\\"window\\.open\\(\\'(?P<streamurl1>.*?)\\'|sources:\\s+\\[{\\\"file\\\":\\\"(?P<streamurl2>.*?)\\\"}\\]",
 "get_nav_data_regex": "<a class=\"next page-numbers\" href=\"(?P<navlink>.*?)\">"
@@ -44,6 +50,7 @@
 {
 "url": "https://tamilgun.bio/video-category/hd-movies/",
 "title": "TamilGun-HDMovies",
+"content_type":"Normal",
 "get_site_content_regex": "data-post-id=\\\"(.*?)\\\"\\sdata-post-type=\\\"vidmov_video\\\"\\shref=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\><img\\swidth=\\\"(.*?)\\\"\\sheight=\\\"(.*?)\\\"\\ssrc=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "unescape\\(\\'(?P<unescape>[^\\']+)|<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"|onclick=\\\"window\\.open\\(\\'(?P<streamurl1>.*?)\\'|sources:\\s+\\[{\\\"file\\\":\\\"(?P<streamurl2>.*?)\\\"}\\]|iframe\\swidth=\\\\\"(.*?)\\\"\\sheight=\\\\\"(.*?)\\\"\\ssrc=\\\\\"(?P<streamurl3>.*?)\\\"|beeteam\\d+_video_source\\\":\\\"(?P<streamurl4>.*?)\\\"",
 "get_nav_data_regex": "a\\sclass=\\\"nextpostslink\\\"\\srel=\\\"next\\\"\\saria-label=\\\"Next Page\\\"\\shref=\\\"(?P<navlink>.*?)\\\""
@@ -51,6 +58,7 @@
 {
 "url": "https://tamilgun.bio/video/",
 "title": "TamilGun-LatestMovies",
+"content_type":"Normal",
 "get_site_content_regex": "data-post-id=\\\"(.*?)\\\"\\sdata-post-type=\\\"vidmov_video\\\"\\shref=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\><img\\swidth=\\\"(.*?)\\\"\\sheight=\\\"(.*?)\\\"\\ssrc=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "unescape\\(\\'(?P<unescape>[^\\']+)|<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"|onclick=\\\"window\\.open\\(\\'(?P<streamurl1>.*?)\\'|sources:\\s+\\[{\\\"file\\\":\\\"(?P<streamurl2>.*?)\\\"}\\]|iframe\\swidth=\\\\\"(.*?)\\\"\\sheight=\\\\\"(.*?)\\\"\\ssrc=\\\\\"(?P<streamurl3>.*?)\\\"|beeteam\\d+_video_source\\\":\\\"(?P<streamurl4>.*?)\\\"",
 "get_nav_data_regex": "a\\sclass=\\\"nextpostslink\\\"\\srel=\\\"next\\\"\\saria-label=\\\"Next Page\\\"\\shref=\\\"(?P<navlink>.*?)\\\""
@@ -58,6 +66,7 @@
 {
 "url": "https://tamilyogi.com/category/tamilyogi-full-movie-online/",
 "title": "TamilYogi-NewMovies",
+"content_type":"Normal",
 "get_site_content_regex": "<div class=\\\"cover\\\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"><img src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
@@ -65,6 +74,7 @@
 {
 "url": "https://tamilyogi.com/category/tamilyogi-bluray-movies/",
 "title": "TamilYogi-HDMovies",
+"content_type":"Normal",
 "get_site_content_regex": "<div class=\\\"cover\\\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"><img src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
@@ -72,6 +82,7 @@
 {
 "url": "https://tamilyogi.com/category/tamilyogi-dubbed-movies-online/",
 "title": "TamilYogi-DubbedMovies",
+"content_type":"Normal",
 "get_site_content_regex": "<div class=\\\"cover\\\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"><img src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
@@ -79,6 +90,7 @@
 {
 "url": "https://tamilyogi.com/category/tamil-web-series/",
 "title": "TamilYogi-WebSeries",
+"content_type":"Normal",
 "get_site_content_regex": "<div class=\\\"cover\\\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"><img src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"",
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
@@ -86,6 +98,7 @@
 {
 "url": "https://www.tubetamil.com",
 "title": "Tubetamil",
+"content_type":"Mature-Content",
 "get_site_content_regex": "<div class=\"thumb\">\\s+<a\\shref=\\\"(?P<pageurl>.*?)\\\"\\s+title=\\\"(?P<title>.*?)\\\">\\s+<img\\ssrc=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<iframe loading=\"lazy\"\\swidth=\\\"(.*?)\\\"\\s+height=\\\"(.*?)\\\"\\s+src=\\\"(?P<streamurl>.*?)\\?",
 "get_nav_data_regex": "<li class=\"next\"><a\\shref=\\\"(?P<navlink>.*?)\\\""
