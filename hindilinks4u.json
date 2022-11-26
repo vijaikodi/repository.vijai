@@ -1,0 +1,10 @@
+[
+{
+"url": "https://hindilinks4u.de/genre/hollywood/",
+"title": "hindilinks4u-hollywood",
+"content_type":"Normal",
+"get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\s(.*?)>\\s+<span(.*?)span>\\s+<img\\sdata-original=\\\"(?P<poster>.*?)\\\"\\sclass(.*?)>\\s+<span class=\"mli-info\"><h2>(?P<title>.*?)<\\\/h2>",
+"get_stream_url_regex": "<a href=\\\"(?P<streamurl>.*?)\\\" class=\\\"lnk-lnk lnk-1\\\"",
+"get_nav_data_regex": "<li class='active'><a class=''>\\d<\\\/a><\\\/li><li><a rel=\\'nofollow\\' class=\\'page larger\\' href=\\'(?P<navlink>.*?)\\'>"
+}
+]
