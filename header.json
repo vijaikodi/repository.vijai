@@ -1,6 +1,10 @@
 [
 {
- "title": "movierulz",
+ "title": "Movierulz",
 "url": "https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/movierulz.json"
+},
+ {
+ "title": "Tamiglun",
+"url": "https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/tamilgun.json"
 }
 ]
