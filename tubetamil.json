@@ -1,0 +1,10 @@
+[
+{
+"url": "https://www.tubetamil.com",
+"title": "Tubetamil",
+"content_type":"Mature-Content",
+"get_site_content_regex": "<div class=\"thumb\">\\s+<a\\shref=\\\"(?P<pageurl>.*?)\\\"\\s+title=\\\"(?P<title>.*?)\\\">\\s+<img\\ssrc=\\\"(?P<poster>.*?)\\\"",
+"get_stream_url_regex": "<iframe loading=\"lazy\"\\swidth=\\\"(.*?)\\\"\\s+height=\\\"(.*?)\\\"\\s+src=\\\"(?P<streamurl>.*?)\\?",
+"get_nav_data_regex": "<li class=\"next\"><a\\shref=\\\"(?P<navlink>.*?)\\\""
+}
+]
