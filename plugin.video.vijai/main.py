@@ -1,6 +1,7 @@
 #https://github.com/tamland/kodi-plugin-routing
 import routing
 import xbmcgui
+import xbmcaddon
 from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
@@ -18,6 +19,29 @@ def getdatacontent_dict(url,reg):
     html = r.read().decode('utf-8')
     r = re.compile(reg)
     data = [m.groupdict() for m in r.finditer(html)]
+    return data
+
+def getdatacontent_membednet_dict(url,reg):
+    headers = {
+    'authority': 'membed.net',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept-language': 'en-US,en;q=0.9,ta-IN;q=0.8,ta;q=0.7,fr-FR;q=0.6,fr;q=0.5',
+    'cache-control': 'max-age=0',
+    'dnt': '1',
+    'sec-ch-ua': '"Google Chrome";v="107", "Chromium";v="107", "Not=A?Brand";v="24"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'document',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'none',
+    'sec-fetch-user': '?1',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36',
+    }
+
+    response = requests.get(url, headers=headers)
+    r = re.compile(reg)
+    data = [m.groupdict() for m in r.finditer(response.text)]
     return data
 
 def getdatacontent(url,reg):
@@ -46,11 +70,34 @@ def loadmainlist(url,title,get_site_content_regex,get_stream_url_regex,get_nav_d
     get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
     addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
 
-
+addon = xbmcaddon.Addon()
 plugin = routing.Plugin()
 @plugin.route('/')
 def index():
-    response = requests.get("https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/json")
+    response = requests.get("https://raw.githubusercontent.com/vijaikodi/repository.vijai/master/resources/header.json")
+    responsetext = response.text
+    responsetext = responsetext.replace('\n', '')
+    try:
+        mainlist = json.loads(response.text)
+    except:
+        Dialog().ok('XBMC', 'Error in Json Loading')
+    if mainlist:
+        xbmc.log("--------------------------------Entering Header List-----------------------------------------")
+        xbmc.log(str(mainlist))
+        for p in mainlist:
+            try:
+                title = p['title']
+                url = p['url']
+                url = urllib.parse.quote_plus(url)
+                addDirectoryItem(plugin.handle, plugin.url_for(listsites,url,title), ListItem(title), True)
+            except:
+                Dialog().ok(title, 'Unable to load this site')
+    endOfDirectory(plugin.handle)
+
+@plugin.route('/listsites/<path:url>/<title>')
+def listsites(url,title):
+    url = urllib.parse.unquote_plus(url)
+    response = requests.get(url)
     responsetext = response.text
     responsetext = responsetext.replace('\n', '')
     try:
@@ -59,65 +106,35 @@ def index():
         Dialog().ok('XBMC', 'Error in Json Loading')
     if mainlist:
         for p in mainlist:
-            try:
-                #loadmainlist(p['url'],p['title'],p['get_site_content_regex'],p['get_stream_url_regex'],p['get_nav_data_regex'])
-                title = p['title']
-                url = p['url']
-                url = urllib.parse.quote_plus(url)
-                get_site_content_regex = urllib.parse.quote_plus(p['get_site_content_regex'])
-                get_stream_url_regex = urllib.parse.quote_plus(p['get_stream_url_regex'])
-                get_nav_data_regex = urllib.parse.quote_plus(p['get_nav_data_regex'])
-                addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
-            except:
-                Dialog().ok(title, 'Unable to load this site')
+            if (addon.getSetting('adult') == 'true'):
+                try:
+                    #loadmainlist(p['url'],p['title'],p['get_site_content_regex'],p['get_stream_url_regex'],p['get_nav_data_regex'])
+                    title = p['title']
+                    url = p['url']
+                    url = urllib.parse.quote_plus(url)
+                    content_type = p['content_type']
+                    get_site_content_regex = urllib.parse.quote_plus(p['get_site_content_regex'])
+                    get_stream_url_regex = urllib.parse.quote_plus(p['get_stream_url_regex'])
+                    get_nav_data_regex = urllib.parse.quote_plus(p['get_nav_data_regex'])
+                    addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
+                except:
+                    Dialog().ok(title, 'Unable to load this site')
+            elif (addon.getSetting('adult') == 'false'):
+                try:
+                    #loadmainlist(p['url'],p['title'],p['get_site_content_regex'],p['get_stream_url_regex'],p['get_nav_data_regex'])
+                    title = p['title']
+                    url = p['url']
+                    url = urllib.parse.quote_plus(url)
+                    content_type = p['content_type']
+                    get_site_content_regex = urllib.parse.quote_plus(p['get_site_content_regex'])
+                    get_stream_url_regex = urllib.parse.quote_plus(p['get_stream_url_regex'])
+                    get_nav_data_regex = urllib.parse.quote_plus(p['get_nav_data_regex'])
+                    if (content_type != "Mature-Content"):
+                        addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem(title), True)
+                except:
+                    Dialog().ok(title, 'Unable to load this site')
 
-    # print (p['title'])
-    # # addDirectoryItem(plugin.handle, plugin.url_for(show_category,"https://6movierulz.com/category/tamil-movie/"), ListItem("Category One"), True)
-    # # addDirectoryItem(plugin.handle, plugin.url_for(show_category, "two"), ListItem("Category Two"), True)
-    # # addDirectoryItem(plugin.handle, plugin.url_for(show_directory, "/dir/two"), ListItem("Directory Two"), True)
-    # movierulzurl = getredirectedurl("http://4movierulz.com")
-    # # r = requests.get(url,verify=False) 
-    # # movierulzurl = r.url
-    # if movierulzurl:
-       #  url = movierulzurl+"/category/tamil-movie/"
-       #  get_site_content_regex ='<a href=\"(?P<pageurl>.*?)\"\stitle=\"(?P<title>.*?)\">\s*<img width=\"\d+\" height=\"\d+\" src=\"(?P<poster>.*?)\"'
-       #  get_stream_url_regex = '<p><strong>(?P<streamtitle>.*?)<\/strong><br \/>\s+<a href=\"(?P<streamurl>.*?)\"'
-       #  get_nav_data_regex = '<a href=\"(?P<navlink>.*?)\">&larr;(\s|)Older Entries'
-       #  get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-       #  get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-       #  get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-       #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Tamil"), True)
-       #  url = movierulzurl+"/bollywood-movie-free/"
-       #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Hindi"), True)
-       #  url = movierulzurl+"/category/telugu-movies-2020/"
-       #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("movierulz-Telugu"), True)
-    # url = "https://www.tubetamil.com"
-    # get_site_content_regex='<div class="thumb">\s+<a\shref=\"(?P<pageurl>.*?)\"\s+title=\"(?P<title>.*?)\">\s+<img\ssrc=\"(?P<poster>.*?)\"'
-    # get_nav_data_regex = '<li class="next"><a\shref=\"(?P<navlink>.*?)\"'
-    # get_stream_url_regex = '<iframe\swidth=\"(.*?)\"\s+height=\"(.*?)\"\s+src=\"(?P<streamurl>.*?)\?'
-    # get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-    # get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-    # get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-    # addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tubetamil"), True)
-    # url= getredirectedurl("http://tamilgun.com")
-    # if url:
-       #  tamilgunurl = url.replace('/tamil/','')
-       #  url = tamilgunurl +'/categories/new-movies-a/'
-       #  get_site_content_regex = '<img src=\" (?P<poster>.*?) \" alt=\"(?P<title>.*?)\" \/>\s+<div class=\"rocky-effect\">\s+<a href=\"(?P<pageurl>.*?)\"\s>'
-       #  get_nav_data_regex = '<a class="next page-numbers" href="(?P<navlink>.*?)">'
-       #  get_stream_url_regex = '<(iframe|IFRAME)(\s|.*?)(src|SRC)=\"(?P<streamurl>.*?)\"|onclick=\"window\.open\(\'(?P<streamurl1>.*?)\'|sources:\s+\[{\"file\":\"(?P<streamurl2>.*?)\"}\]'
-       #  get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-       #  get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-       #  get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-       #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tamilgun-NewMovies"), True)
-       #  url = tamilgunurl +'/categories/hd-movies/'
-       #  get_site_content_regex = '<img src=\" (?P<poster>.*?) \" alt=\"(?P<title>.*?)\" \/>\s+<div class=\"rocky-effect\">\s+<a href=\"(?P<pageurl>.*?)\"\s>'
-       #  get_nav_data_regex = '<a class="next page-numbers" href="(?P<navlink>.*?)">'
-       #  get_stream_url_regex = '<(iframe|IFRAME)(\s|.*?)(src|SRC)=\"(?P<streamurl>.*?)\"|onclick=\"window\.open\(\'(?P<streamurl1>.*?)\'|sources:\s+\[{\"file\":\"(?P<streamurl2>.*?)\"}\]'
-       #  get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-       #  get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
-       #  get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-       #  addDirectoryItem(plugin.handle, plugin.url_for(getsitecontent,url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex), ListItem("Tamilgun-HDMovies"), True)
+    
     endOfDirectory(plugin.handle)
 
 
@@ -146,26 +163,10 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
             nav = nav['navlink']
             addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
     endOfDirectory(plugin.handle)
-    # try:
-    #     data = getdatacontent_dict(url,get_site_content_regex)
-    #     nav = getdatacontent_dict(url,get_nav_data_regex)
-    #     for item in data:
-    #         listitem = xbmcgui.ListItem(item['title'])
-    #         #ListItem.setLabel(item['title'])
-    #         listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
-    #         #addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), ListItem(label=item['title'],icon=item['poster']),True)
-    #         addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), listitem,True)
-    #     if nav:
-    #         get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
-    #         get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
-    #         nav = nav[0]
-    #         if nav['navlink']:
-    #             nav = nav['navlink']
-    #             addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
-    # except:
-    #     Dialog().ok('Loading site content', 'Unable to load this site')
-    # endOfDirectory(plugin.handle)
 
+
+#Streamurl can be worked on this part of the code
+#streamurl regex groupname ex: (?P<streamurl>.*?)   the streamurl can be captured in the key value of the dictionary and can be used for further logic
 @plugin.route('/liststreamurl/<path:url>/<get_stream_url_regex>')
 def liststreamurl(url,get_stream_url_regex):
     get_stream_url_regex = urllib.parse.unquote_plus(get_stream_url_regex)
@@ -201,6 +202,36 @@ def liststreamurl(url,get_stream_url_regex):
                                 title = title[2]+'-Link'
                                 url = urllib.parse.quote_plus(url)
                                 addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+                if 'membed.net'in value:
+                    if value:
+                        xbmc.log('-----------------------------------------------------membed link----------------------------------')
+                        xbmc.log(value)
+                        url = urllib.parse.unquote_plus(value)
+                        reg = "<div class=\"dowload\"><a\s+href=\"(?P<streamurl>.*?)\"\starget=\'_blank\'>(?P<title>.*?)<\/a>"
+                        data = getdatacontent_membednet_dict(url,reg)
+                        xbmc.log(str(data))
+                        source = "hindilinks4u"
+                        for item in data:
+                            if 'sbplay2' in item['streamurl']:
+                                url = item['streamurl']
+                                url = url.split('?')
+                                url = url[0]
+                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                            if 'dood' in item['streamurl']:
+                                url = item['streamurl']
+                                url = url.split('?')
+                                url = url[0]
+                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                            if 'embedsito' in item['streamurl']:
+                                url = item['streamurl']
+                                url = url.split('#')
+                                url = url[0]
+                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                            if 'mixdrop' in item['streamurl']:
+                                url = item['streamurl']
+                                url = url.split('?')
+                                url = url[0]
+                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
         endOfDirectory(plugin.handle)
     except:
         endOfDirectory(plugin.handle)

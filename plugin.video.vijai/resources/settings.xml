@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<settings>
+	<category label="Miscellaneous">
+		<setting label="Mature Content" type="lsep"/>
+		<setting label="Enable Mature Content" type="bool" id="adult" default="false"/>
+	</category>	
+</settings>

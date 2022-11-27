@@ -1,3 +1,3 @@
-Version 3.0.50 (Oct 15, 2022)
-- Arivakam Resolver:
-    - Vimeo file resolver fixed
+Version 3.0.51 (Oct 15, 2022)
+- Main header list has been modified:
+- Added Hindilinks4u site

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 <addon id="plugin.video.vijai"
-version="3.0.50"
+version="3.0.51"
 name="vijai"
 provider-name="vijai">
 <requires>
@@ -22,6 +22,9 @@ provider-name="vijai">
     <icon>icon.png</icon>
   </assets>
   <news>
+    v3.0.51 (26-11-2022)
+      - Main Heading list has been modified
+      - Added Hindilinks4u
     v3.0.49 (09-10-2022)
       - Updated Arivakam resolve url
     v3.0.41 (2022-01-08)
