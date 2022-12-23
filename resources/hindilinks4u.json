@@ -17,7 +17,7 @@
 },
 {
 "url": "https://hindilinks4u.pm/director/hotshots/",
-"title": "hindilinks4u-Ullu",
+"title": "hindilinks4u-hotshots",
 "content_type":"Mature-Content",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\s(.*?)>\\s+<span(.*?)span>\\s+<img\\sdata-original=\\\"(?P<poster>.*?)\\\"\\sclass(.*?)>\\s+<span class=\"mli-info\"><h2>(?P<title>.*?)<\\\/h2>",
 "get_stream_url_regex": "<a href=\\\"(?P<hindilinks4u_streamurl>.*?)\\\" class=\\\"lnk-lnk lnk-1\\\"",
@@ -25,7 +25,7 @@
 },
 {
 "url": "https://hindilinks4u.pm/?s=uncut",
-"title": "hindilinks4u-Ullu",
+"title": "hindilinks4u-Uncut",
 "content_type":"Mature-Content",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\s(.*?)>\\s+<span(.*?)span>\\s+<img\\sdata-original=\\\"(?P<poster>.*?)\\\"\\sclass(.*?)>\\s+<span class=\"mli-info\"><h2>(?P<title>.*?)<\\\/h2>",
 "get_stream_url_regex": "<a href=\\\"(?P<hindilinks4u_streamurl>.*?)\\\" class=\\\"lnk-lnk lnk-1\\\"",
@@ -33,7 +33,7 @@
 },
 {
 "url": "https://hindilinks4u.pm/genre/erotic-movies/",
-"title": "hindilinks4u-Ullu",
+"title": "hindilinks4u-Erotic-movies",
 "content_type":"Mature-Content",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\s(.*?)>\\s+<span(.*?)span>\\s+<img\\sdata-original=\\\"(?P<poster>.*?)\\\"\\sclass(.*?)>\\s+<span class=\"mli-info\"><h2>(?P<title>.*?)<\\\/h2>",
 "get_stream_url_regex": "<a href=\\\"(?P<hindilinks4u_streamurl>.*?)\\\" class=\\\"lnk-lnk lnk-1\\\"",
