@@ -1,6 +1,6 @@
 [
 {
-"url": "https://hindilinks4u.pm/genre/hollywood/",
+"url": "https://hindilinks4u.pm/genre/dual-audio/",
 "title": "hindilinks4u-hollywood",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\s(.*?)>\\s+<span(.*?)span>\\s+<img\\sdata-original=\\\"(?P<poster>.*?)\\\"\\sclass(.*?)>\\s+<span class=\"mli-info\"><h2>(?P<title>.*?)<\\\/h2>",
