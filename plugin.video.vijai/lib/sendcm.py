@@ -1,6 +1,7 @@
 import urllib.request, urllib.error, urllib.parse,re,xbmc,urllib.request,urllib.parse,urllib.error,requests
 import resolveurl as urlresolver
 from .unpack import unpack
+from xbmcgui import Dialog
 
 def getdatacontent_dict(url,reg):
     proxy_handler = urllib.request.ProxyHandler({})
@@ -38,8 +39,12 @@ def get_redirect_url(url, headers={}):
     return response.geturl()
 
 def resolve_sendcm(url):
-    reg = 'source\ssrc=\"(.*?)\"'
-    link = getdatacontent(url,reg)
-#    link = link[0]
-    link = link[0].replace('.mkv','.mp4')
-    return link
+    try:
+        reg = 'source\ssrc=\"(.*?)\"'
+        link = getdatacontent(url,reg)
+        #    link = link[0]
+        link = link[0].replace('.mkv','.mp4')
+        return link
+    except:
+        Dialog().ok('XBMC', 'Unable to locate video')
+  
