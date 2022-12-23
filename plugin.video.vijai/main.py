@@ -2,7 +2,7 @@
 import routing
 import xbmcgui
 import xbmcaddon
-
+from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver

@@ -1,3 +1,12 @@
-v3.0.52 (24-12-2022)
-	- fixed list stream url
-    - added few more links to Hindilinks4u
+[B]Version 3.0.53 - 24 Dec 2022[/B]
+- Base Code Changes
+    - None
+
+- Scrapers Added:
+    - None
+ 
+- Scrapers Fixed/Updated:
+    - Hindilinks4u
+
+- Scrapers Removed:
+    - None

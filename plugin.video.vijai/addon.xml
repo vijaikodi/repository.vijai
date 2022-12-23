@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.vijai"
-version="3.0.52"
+version="3.0.53"
 name="vijai"
 provider-name="vijai">
 <requires>
@@ -21,6 +21,9 @@ provider-name="vijai">
     <icon>icon.png</icon>
   </assets>
   <news>
+    v3.0.52 (24-12-2022)
+      - fixed list stream url
+      - added few more links to Hindilinks4u
     v3.0.52 (24-12-2022)
       - fixed list stream url
       - added few more links to Hindilinks4u
