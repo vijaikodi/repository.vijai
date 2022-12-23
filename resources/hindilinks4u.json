@@ -10,7 +10,7 @@
 {
 "url": "https://hindilinks4u.pm/?s=ullu",
 "title": "hindilinks4u-Ullu",
-"content_type":"Normal",
+"content_type":"adult",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\s(.*?)>\\s+<span(.*?)span>\\s+<img\\sdata-original=\\\"(?P<poster>.*?)\\\"\\sclass(.*?)>\\s+<span class=\"mli-info\"><h2>(?P<title>.*?)<\\\/h2>",
 "get_stream_url_regex": "<a href=\\\"(?P<hindilinks4u_streamurl>.*?)\\\" class=\\\"lnk-lnk lnk-1\\\"",
 "get_nav_data_regex": "<li class='active'><a class=''>\\d<\\\/a><\\\/li><li><a rel=\\'nofollow\\' class=\\'page larger\\' href=\\'(?P<navlink>.*?)\\'>"
