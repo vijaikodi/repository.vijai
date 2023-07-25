@@ -76,7 +76,33 @@ After doing so, your file manager source will be:
 
 `https://YOUR_HOST_URL_HERE/repo/`
 
+# Debugging kodi addon using kodi web-pdb
+[source](https://kodi.wiki/view/HOW-TO:Debug_Python_Scripts_with_Web-PDB)
 
+Web-PDB is a remote web-interface to Python's built-in PDB debugger with additional convenience features. It is not tied to any IDE or other software, all you need is a common web-browser, e.g. Chrome or Firefox. Web-PDB is compatible with both Python 2 and 3, so you can use it to debug your Python 3 compatible addons.
 
+How To Use Web-PDB for Kodi
 
+1. Install Web-PDB addon: Kodi Add-on repository > Program add-ons > Web-PDB.
+
+2. Add script.module.web-pdb to addon.xml as a dependency:
+
+```
+<requires>
+  ...
+   <import addon="script.module.web-pdb" version="1.5.6"/>
+<requires>
+```
+
+3. Restart Kodi so that it re-reads addon dependencies.
+
+4. Insert the following line into your addon code at the point where you want to start debugging:
+
+```
+import web_pdb; web_pdb.set_trace()
+```
+
+The set_trace() call will suspend your addon and open a web-UI at the default port 5555 (port value can be changed). At the same time a notification will be displayed in Kodi, indicating that a debug session is active. The notification also shows web-UI host/port.
+
+5. Enter in your the address bar of your browser: http://<your Kodi machine hostname or IP>:5555, for example http://monty-python:5555. Use localhost as a hostname if you are connecting from the same machine that runs Kodi. If everything is OK, you should see the Web-PDB UI. Now you can use all PDB commands and features. Additional Current file, Globals and Locals information boxes help you better track your program runtime state.
 
