@@ -6,4 +6,5 @@
 "get_site_content_regex": "<div class=\\\"post-thumb\\\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s+<img\\swidth=\\\"(.*?)data-lazy-src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "data-lazy-src=\\\"(?P<streamurl>.*?)\\\"><\\\/iframe>",
 "get_nav_data_regex": ""
-}]
+}
+]
