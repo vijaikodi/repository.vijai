@@ -1,6 +1,6 @@
 [
 {
-"url": "https://movierulz6.com/category/tamil-movies-2023",
+"url": "https://ww8.7movierulz.sk/category/tamil-movie",
 "title": "movierulz-Tamil",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
