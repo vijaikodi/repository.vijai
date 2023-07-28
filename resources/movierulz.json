@@ -16,7 +16,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
  },
 {
-"url": "https://ww8.7movierulz.sk/category/bollywood-movie-2021",
+"url": "https://ww8.7movierulz.sk/category/bollywood-movie-2023",
 "title": "movierulz-Hindi",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -32,7 +32,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://ww8.7movierulz.sk/category/hollywood-movie-2020/",
+"url": "https://ww8.7movierulz.sk/category/hollywood-movie-2023/",
 "title": "movierulz-Hollywood",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
