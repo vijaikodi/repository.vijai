@@ -1,6 +1,6 @@
 [
 {
-"url": "https://tamilgun.bio/video-category/dubbed-movies/",
+"url": "https://tamilgun.com/video-category/dubbed-movies/",
 "title": "TamilGun-DubbedMovies",
 "content_type":"Normal",
 "get_site_content_regex": "<img src=\\\" (?P<poster>.*?) \\\" alt=\\\"(?P<title>.*?)\\\" \\\/>\\s+<div class=\\\"rocky-effect\\\">\\s+<a href=\\\"(?P<pageurl>.*?)\\\"\\s>",
@@ -8,7 +8,7 @@
 "get_nav_data_regex": "<a class=\"next page-numbers\" href=\"(?P<navlink>.*?)\">"
 },
 {
-"url": "https://tamilgun.bio/video-category/hd-movies/",
+"url": "https://tamilgun.com/video-category/hd-movies/",
 "title": "TamilGun-HDMovies",
 "content_type":"Normal",
 "get_site_content_regex": "data-post-id=\\\"(.*?)\\\"\\sdata-post-type=\\\"vidmov_video\\\"\\shref=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\><img\\swidth=\\\"(.*?)\\\"\\sheight=\\\"(.*?)\\\"\\ssrc=\\\"(?P<poster>.*?)\\\"",
@@ -16,7 +16,7 @@
 "get_nav_data_regex": "a\\sclass=\\\"nextpostslink\\\"\\srel=\\\"next\\\"\\saria-label=\\\"Next Page\\\"\\shref=\\\"(?P<navlink>.*?)\\\""
 },
 {
-"url": "https://tamilgun.bio/video/",
+"url": "https://tamilgun.com/video/",
 "title": "TamilGun-LatestMovies",
 "content_type":"Normal",
 "get_site_content_regex": "data-post-id=\\\"(.*?)\\\"\\sdata-post-type=\\\"vidmov_video\\\"\\shref=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\><img\\swidth=\\\"(.*?)\\\"\\sheight=\\\"(.*?)\\\"\\ssrc=\\\"(?P<poster>.*?)\\\"",
