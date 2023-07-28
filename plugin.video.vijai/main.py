@@ -1,20 +1,24 @@
 #https://github.com/tamland/kodi-plugin-routing
 import routing
+import web_pdb
 import xbmcgui
 import xbmcaddon
 from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx
 import json,os,xbmcvfs
 
-
+# To get help and inspect or debug the code use xbmc.log() or set_trace()
+# xbmc.log(url)
+# Place this line to trace the error
+# web_pdb.set_trace()
 def getdatacontent_dict(url,reg):
     proxy_handler = urllib.request.ProxyHandler({})
     opener = urllib.request.build_opener(proxy_handler)
     req = urllib.request.Request(url)
-    opener.addheaders = [('User-agent', 'Mozilla/5.0')]
+    opener.addheaders = [('User-agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36')]
     r = opener.open(req)
     html = r.read().decode('utf-8')
     r = re.compile(reg)
@@ -82,8 +86,6 @@ def index():
     except:
         Dialog().ok('XBMC', 'Error in Json Loading')
     if mainlist:
-        xbmc.log("--------------------------------Entering Header List-----------------------------------------")
-        xbmc.log(str(mainlist))
         for p in mainlist:
             try:
                 title = p['title']
@@ -141,10 +143,7 @@ def listsites(url,title):
 @plugin.route('/getsitecontent/<path:url>/<get_site_content_regex>/<get_nav_data_regex>/<get_stream_url_regex>')
 def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex):
     url = urllib.parse.unquote_plus(url)
-    xbmc.log(url)
     url = getredirectedurl(url)
-    xbmc.log('----------------------------------------------Entering getsitecontent---------------------------------------------------')
-    xbmc.log(url)
     get_site_content_regex = urllib.parse.unquote_plus(get_site_content_regex)
     get_nav_data_regex = urllib.parse.unquote_plus(get_nav_data_regex)
     data = getdatacontent_dict(url,get_site_content_regex)
@@ -169,69 +168,77 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
 #streamurl regex groupname ex: (?P<streamurl>.*?)   the streamurl can be captured in the key value of the dictionary and can be used for further logic
 @plugin.route('/liststreamurl/<path:url>/<get_stream_url_regex>')
 def liststreamurl(url,get_stream_url_regex):
+    # web_pdb.set_trace()
     get_stream_url_regex = urllib.parse.unquote_plus(get_stream_url_regex)
-    xbmc.log('-----------------------------------------------------Entering ListstreamURL---------------------------------')
-    xbmc.log(get_stream_url_regex)
     try:
         data = getdatacontent_dict(url,get_stream_url_regex)
         blacklists = ['goblogportal']
         for item in data:
-            for key, value in list(item.items()):
-                if 'streamurl'in key:
+            #web_pdb.set_trace()
+            if ('streamtitle'in item) and ('streamurl'in item):
                     #This loop helps list the titles of the stream provider ex; playarivalam, streamtape,vimeo etc
-                    if value:
+                    if item['streamurl']:
                         for blacklist in blacklists:
-                            if blacklist in value:
+                            if blacklist in item['streamurl']:
                                 pass
                             else:
-                                streamurl = urllib.parse.quote_plus(value)
-                                title = value.split('/')
-                                title = title[2]+'-Link'
+                                streamurl = urllib.parse.quote_plus(item['streamurl'])
+                                title = urllib.parse.quote_plus(item['streamtitle'])
                                 url = urllib.parse.quote_plus(url)
                                 addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
-                if 'unescape'in key:
-                    if value:
-                        xbmc.log('-----------------------------------------------------Tamilgun resolvelink-unescape---------------------------------')
-                        linkcode = urllib.parse.unquote_plus(value)
-                        if "iframe src=" in linkcode:
-                            sources = re.findall('<iframe.+?src="([^"]+)', linkcode)
-                            for source in sources:
-                                streamurl = urllib.parse.quote_plus(source)
-                                title = source.split('/')
-                                title = title[2]+'-Link'
-                                url = urllib.parse.quote_plus(url)
-                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
-                if "hindilinks4u_streamurl" in key:
-                    if 'membed.net'in value:
+            else:
+                for key, value in list(item.items()):
+                    if 'streamurl'in key:
+                        #This loop helps list the titles of the stream provider ex; playarivalam, streamtape,vimeo etc
                         if value:
-                            xbmc.log('-----------------------------------------------------membed link----------------------------------')
-                            xbmc.log(value)
-                            url = urllib.parse.unquote_plus(value)
-                            reg = "<div class=\"dowload\"><a\s+href=\"(?P<streamurl>.*?)\"\starget=\'_blank\'>(?P<title>.*?)<\/a>"
-                            data = getdatacontent_membednet_dict(url,reg)
-                            xbmc.log(str(data))
-                            source = "hindilinks4u"
-                            for item in data:
-                                if 'sbplay2' in item['streamurl']:
-                                    url = item['streamurl']
-                                    url = url.split('?')
-                                    url = url[0]
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
-                                if 'dood' in item['streamurl']:
-                                    url = item['streamurl']
-                                    url = url.split('?')
-                                    url = url[0]
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
-                                if 'embedsito' in item['streamurl']:
-                                    url = item['streamurl']
-                                    url = url.split('#')
-                                    url = url[0]
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
-                                if 'mixdrop' in item['streamurl']:
-                                    url = item['streamurl']
-                                    url = url.split('?')
-                                    url = url[0]
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                            for blacklist in blacklists:
+                                if blacklist in value:
+                                    pass
+                                else:
+                                    streamurl = urllib.parse.quote_plus(value)
+                                    title = value.split('/')
+                                    title = title[2]+'-Link'
+                                    url = urllib.parse.quote_plus(url)
+                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+                    if 'unescape'in key:
+                        if value:
+                            linkcode = urllib.parse.unquote_plus(value)
+                            if "iframe src=" in linkcode:
+                                sources = re.findall('<iframe.+?src="([^"]+)', linkcode)
+                                for source in sources:
+                                    streamurl = urllib.parse.quote_plus(source)
+                                    title = source.split('/')
+                                    title = title[2]+'-Link'
+                                    url = urllib.parse.quote_plus(url)
+                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+                    if "hindilinks4u_streamurl" in key:
+                        if 'membed.net'in value:
+                            if value:
+                                url = urllib.parse.unquote_plus(value)
+                                reg = "<div class=\"dowload\"><a\s+href=\"(?P<streamurl>.*?)\"\starget=\'_blank\'>(?P<title>.*?)<\/a>"
+                                data = getdatacontent_membednet_dict(url,reg)
+                                source = "hindilinks4u"
+                                for item in data:
+                                    if 'sbplay2' in item['streamurl']:
+                                        url = item['streamurl']
+                                        url = url.split('?')
+                                        url = url[0]
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                                    if 'dood' in item['streamurl']:
+                                        url = item['streamurl']
+                                        url = url.split('?')
+                                        url = url[0]
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                                    if 'embedsito' in item['streamurl']:
+                                        url = item['streamurl']
+                                        url = url.split('#')
+                                        url = url[0]
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                                    if 'mixdrop' in item['streamurl']:
+                                        url = item['streamurl']
+                                        url = url.split('?')
+                                        url = url[0]
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
         endOfDirectory(plugin.handle)
     except:
         endOfDirectory(plugin.handle)
@@ -242,7 +249,6 @@ def liststreamurl(url,get_stream_url_regex):
 def resolvelink(url,source):
     url = urllib.parse.unquote_plus(url)
     source = urllib.parse.unquote_plus(source)
-    xbmc.log(url)
     play_item = ListItem('click to play the link')
     play_item.setInfo( type="Video", infoLabels=None)
     play_item.setProperty('IsPlayable', 'true')
@@ -330,6 +336,20 @@ def resolvelink(url,source):
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'embed.icu' in url:
+        movieurl = embedicu.resolve_embedicu(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'watchlinkx' in url:
+        movieurl = watchlinkx.resolve_watchlinkx(url)
+        try:
+            movieurl = urlresolver.HostedMediaFile(movieurl)
+            movieurl = movieurl.resolve()
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
     elif "embed1.tamildbox" in url:
         movieurl = embedtamilgun.resolve_embedtamilgun(url)
         try:
@@ -408,7 +428,6 @@ def resolvelink(url,source):
         try:
             movieurl = urlresolver.HostedMediaFile(url)
             movieurl = movieurl.resolve()
-            xbmc.log(movieurl)
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
@@ -425,3 +444,4 @@ def resolvelink(url,source):
 
 if __name__ == '__main__':
     plugin.run()
+    

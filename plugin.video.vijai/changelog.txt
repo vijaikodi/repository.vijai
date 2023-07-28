@@ -1,12 +1,13 @@
-[B]Version 3.0.53 - 24 Dec 2022[/B]
+[B]Version 3.0.54 - 28 Jul 2023[/B]
 - Base Code Changes
-    - None
+    - Added web-pdb for debugging
 
 - Scrapers Added:
     - None
  
 - Scrapers Fixed/Updated:
-    - Hindilinks4u
+    - Tamilyogi
+    - Movierulz
 
 - Scrapers Removed:
     - None
