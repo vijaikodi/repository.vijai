@@ -1,13 +1,13 @@
-[B]Version 3.0.54 - 28 Jul 2023[/B]
+[B]Version 3.0.55 - 29 Jul 2023[/B]
 - Base Code Changes
-    - Added web-pdb for debugging
+    - None
 
 - Scrapers Added:
     - None
  
 - Scrapers Fixed/Updated:
-    - Tamilyogi
-    - Movierulz
+    - Arivakam
+    - Playallu
 
 - Scrapers Removed:
     - None

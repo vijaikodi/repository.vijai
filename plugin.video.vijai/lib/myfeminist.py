@@ -50,6 +50,9 @@ def get_redirect_url(url, headers={}):
 #     return movieurl
 
 def resolve_myfeminist(url):
-    reg = 'sources:\s+\[{file:\"(.*?)\"'
+    reg = 'sources:\s+\[\"(.*?)\"'
     link = getdatacontent(url,reg)
-    return link[0]
+    if link:
+        return link[0]
+    else:
+        return None

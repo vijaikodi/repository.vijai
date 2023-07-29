@@ -276,10 +276,11 @@ def resolvelink(url,source):
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'arivakam' in url:
+        #web_pdb.set_trace()
         if 'tamilgun' in source:
             url = url.replace('\/','/')
             url = url[:-1]
-        movieurl = arivakam.resolve_arivakam(url)
+        movieurl = arivakam.resolve_arivakam(url,source)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:

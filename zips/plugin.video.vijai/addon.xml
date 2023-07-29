@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addon id="plugin.video.vijai"
-version="3.0.54"
+version="3.0.55"
 name="vijai"
 provider-name="vijai">
 <requires>
@@ -22,7 +22,11 @@ provider-name="vijai">
     <icon>icon.png</icon>
   </assets>
   <news>
-    v3.0.54 (24-12-2022)
+    v3.0.55 (29/7/2023)
+      - fixed tamilgun
+      - Updated Arivakam resolve url
+      - Updated playallu resolve url
+    v3.0.54 (29/7/2023)
       - fixed tamilyogi
       - fixed movierulz
       - added web-pdb debugging 

@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from .unpack import unpack
 from lib import playallu
 from xbmcgui import ListItem, Dialog
+import web_pdb
 import resolveurl as urlresolver
 
 def getcontent(url):
@@ -38,6 +39,47 @@ def getredirectedurl(url):
     except Exception as e:
         Dialog().ok('XBMC', str(e))
 
+def resolve_arivakam(url,source):
+    #web_pdb.set_trace()
+    id = url.split('=')
+    id = id [-1]
+    headers = {
+    'authority': 'player2.arivakam.net',
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    'accept-language': 'en-US,en;q=0.9,ta-IN;q=0.8,ta;q=0.7,fr-FR;q=0.6,fr;q=0.5',
+    'dnt': '1',
+    'referer': source,
+    'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"',
+    'sec-ch-ua-mobile': '?0',
+    'sec-ch-ua-platform': '"Windows"',
+    'sec-fetch-dest': 'iframe',
+    'sec-fetch-mode': 'navigate',
+    'sec-fetch-site': 'cross-site',
+    'upgrade-insecure-requests': '1',
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    }
+
+    params = {
+        'id': id,
+    }
+
+    response = requests.get('https://player2.arivakam.net/player/', params=params, headers=headers)
+
+    reg = '\"file\":\"(.*?)\"'
+    html = response.text
+    data = re.compile(reg).findall(html)
+    if data:
+        streamurl = data[0]
+        return streamurl
+    else:
+        return None
+
+
+
+
+
+
+
 # def resolve_arivakam(url):
 #     try:
 #         reg = '"file":\"(.*?)\"'
@@ -61,85 +103,93 @@ def getredirectedurl(url):
 #     except:
 #         return None    
 
-def resolve_arivakam(url):
-    try:
-        headers = {
-        'authority': 'play.arivakam.net',
-        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'accept-language': 'en-US,en;q=0.9',
-        'referer': 'https://tamilgun.asia/',
-        'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
-        'sec-ch-ua-mobile': '?0',
-        'sec-ch-ua-platform': '"Windows"',
-        'sec-fetch-dest': 'iframe',
-        'sec-fetch-mode': 'navigate',
-        'sec-fetch-site': 'cross-site',
-        'upgrade-insecure-requests': '1',
-        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36',
-        }
-        response = requests.get(url, headers=headers, verify=False)
-        reg = '"file":\"(.*?)\"'
-        data = re.compile(reg).findall(response.text)
-        xbmc.log('--------------------------------------Entering Arivakam DATA Key = 1-----------------------------------------------------')
-        xbmc.log(str(data))
-        for url in data:
-            if 'vimeo' in url:
-                #xbmc.log(url)
-                headers = {
-                    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-                    'Accept-Language': 'en-US,en;q=0.9,ta-IN;q=0.8,ta;q=0.7,fr-FR;q=0.6,fr;q=0.5',
-                    'Connection': 'keep-alive',
-                    'DNT': '1',
-                    'Referer': 'https://play.arivakam.net/',
-                    'Sec-Fetch-Dest': 'iframe',
-                    'Sec-Fetch-Mode': 'navigate',
-                    'Sec-Fetch-Site': 'cross-site',
-                    'Upgrade-Insecure-Requests': '1',
-                    'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
-                    'sec-ch-ua': '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',
-                    'sec-ch-ua-mobile': '?0',
-                    'sec-ch-ua-platform': '"Windows"',
-                }
-                #response = requests.get(url, headers=headers)
-                reg = "\"avc_url\":\"(.*?)\""
-                tempurl = getdatacontent(url,reg)
-                #url = re.compile(reg).findall(response)
-                xbmc.log('------------------------------------------ENtering Arivakam------------------------------------------------------------------')
-                ##xbmc.log(str(response))
-                xbmc.log(str(tempurl))
-                if tempurl:
-                    url = tempurl[2]
-                    return url
-                else:
-                    xbmc.log('------------------------------------------ENtering Arivakam 2 ------------------------------------------------------------------')
-                    try:
-                        return url
-                    except:
-                        Dialog().ok('XBMC', 'Unable to locate video')
-                    return None
-            if 'cdntest.diebutx' in url:
-                if url:
-                    t = url.split('playlist.m3u8')
-                    start_url = t[0]
-                    xbmc.log(start_url)
-                    reg = "NAME=720p\s+(.*?)\s+#EXT"
-                    end_url = getdatacontent(url,reg)
-                    if end_url:
-                        end_url = end_url[0]
-                        xbmc.log(end_url)
-                        url = start_url+end_url
-                        xbmc.log(url)
-                        return url
-                    else:
-                        return None
-                else:
-                    return None
-            else:
-                return None
-    except:
-        Dialog().ok('XBMC', 'Unable to locate video')
 
 
+
+
+
+
+
+
+# def resolve_arivakam(url):
+#     try:
+#         headers = {
+#         'authority': 'play.arivakam.net',
+#         'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+#         'accept-language': 'en-US,en;q=0.9',
+#         'referer': 'https://tamilgun.asia/',
+#         'sec-ch-ua': '" Not A;Brand";v="99", "Chromium";v="102", "Google Chrome";v="102"',
+#         'sec-ch-ua-mobile': '?0',
+#         'sec-ch-ua-platform': '"Windows"',
+#         'sec-fetch-dest': 'iframe',
+#         'sec-fetch-mode': 'navigate',
+#         'sec-fetch-site': 'cross-site',
+#         'upgrade-insecure-requests': '1',
+#         'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.63 Safari/537.36',
+#         }
+#         response = requests.get(url, headers=headers, verify=False)
+#         reg = '"file":\"(.*?)\"'
+#         data = re.compile(reg).findall(response.text)
+#         xbmc.log('--------------------------------------Entering Arivakam DATA Key = 1-----------------------------------------------------')
+#         xbmc.log(str(data))
+#         for url in data:
+#             if 'vimeo' in url:
+#                 #xbmc.log(url)
+#                 headers = {
+#                     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+#                     'Accept-Language': 'en-US,en;q=0.9,ta-IN;q=0.8,ta;q=0.7,fr-FR;q=0.6,fr;q=0.5',
+#                     'Connection': 'keep-alive',
+#                     'DNT': '1',
+#                     'Referer': 'https://play.arivakam.net/',
+#                     'Sec-Fetch-Dest': 'iframe',
+#                     'Sec-Fetch-Mode': 'navigate',
+#                     'Sec-Fetch-Site': 'cross-site',
+#                     'Upgrade-Insecure-Requests': '1',
+#                     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36',
+#                     'sec-ch-ua': '"Google Chrome";v="105", "Not)A;Brand";v="8", "Chromium";v="105"',
+#                     'sec-ch-ua-mobile': '?0',
+#                     'sec-ch-ua-platform': '"Windows"',
+#                 }
+#                 #response = requests.get(url, headers=headers)
+#                 reg = "\"avc_url\":\"(.*?)\""
+#                 tempurl = getdatacontent(url,reg)
+#                 #url = re.compile(reg).findall(response)
+#                 xbmc.log('------------------------------------------ENtering Arivakam------------------------------------------------------------------')
+#                 ##xbmc.log(str(response))
+#                 xbmc.log(str(tempurl))
+#                 if tempurl:
+#                     url = tempurl[2]
+#                     return url
+#                 else:
+#                     xbmc.log('------------------------------------------ENtering Arivakam 2 ------------------------------------------------------------------')
+#                     try:
+#                         return url
+#                     except:
+#                         Dialog().ok('XBMC', 'Unable to locate video')
+#                     return None
+#             if 'cdntest.diebutx' in url:
+#                 if url:
+#                     t = url.split('playlist.m3u8')
+#                     start_url = t[0]
+#                     xbmc.log(start_url)
+#                     reg = "NAME=720p\s+(.*?)\s+#EXT"
+#                     end_url = getdatacontent(url,reg)
+#                     if end_url:
+#                         end_url = end_url[0]
+#                         xbmc.log(end_url)
+#                         url = start_url+end_url
+#                         xbmc.log(url)
+#                         return url
+#                     else:
+#                         return None
+#                 else:
+#                     return None
+#             else:
+#                 return None
+#     except:
+#         Dialog().ok('XBMC', 'Unable to locate video')
+
+#-----------------------------------------------------------------------------------------------------------------------------
     # url = url.split('=')
     # url = url[1]
     # url = url.rstrip(url[-1])

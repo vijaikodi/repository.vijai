@@ -2,6 +2,7 @@ import urllib.request, urllib.error, urllib.parse,re,xbmc,urllib.request,urllib.
 import resolveurl as urlresolver
 from .unpack import unpack
 
+
 def getdatacontent_dict(url,reg):
     proxy_handler = urllib.request.ProxyHandler({})
     opener = urllib.request.build_opener(proxy_handler)
@@ -50,6 +51,7 @@ def play_video(path):
 
 
 def resolve_playallu(url):
+    #web_pdb.set_trace()
     reg = 'idfile\s=\s\"(.*?)\";\s+var\sidUser\s=\s\"(.*?)\";'
     data = getdatacontent(url,reg)
     data = data[0]
@@ -82,7 +84,9 @@ def resolve_playallu(url):
     }
 
     response = requests.post(url, headers=headers, data=data)
+    data1 = response.json()
     data = response.text
+    tgdr = str(data1["tgdr"])
     reg = '\"(.*?)\"'
     data = re.compile(reg).findall(data)
     data =  (data[7:])
@@ -91,11 +95,12 @@ def resolve_playallu(url):
     f = open(fpath, "w")
     f.write("#EXTM3U\n")
     f.write("#EXT-X-VERSION:3\n")
-    f.write("#EXT-X-TARGETDURATION:6\n")
+    f.write("#EXT-X-TARGETDURATION:"+tgdr+"\n")
     f.write("#EXT-X-PLAYLIST-TYPE:VOD\n")
     for line in data:
-        f.write("#EXTINF:6,\n")
-        f.write("https://plhq01.ggccallu001.xyz/stream/v5/"+line+".html\n")
+        f.write("#EXTINF:"+tgdr+",\n")
+        #f.write("https://plhq01.ggccallu001.xyz/stream/v5/"+line+".html\n")
+        f.write("https://plhq01.strplhqallu001.click/stream/v5/"+line+".html\n")
     f.write("#EXT-X-ENDLIST\n")
     f.close()
     return fpath
