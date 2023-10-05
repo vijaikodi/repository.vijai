@@ -7,7 +7,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool
 import json,os,xbmcvfs
 
 # To get help and inspect or debug the code use xbmc.log() or set_trace()
@@ -369,12 +369,18 @@ def resolvelink(url,source):
                 Dialog().ok('XBMC', 'Unable to locate video')
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
-    elif 'vimeo' in url and 'tamilgun' in source:
-        movieurl = embedtamilgun.resolve_vimeo(url)
+    # elif 'vimeo' in url and 'tamilgun' in source:
+    #     movieurl = embedtamilgun.resolve_vimeo(url)
+    #     try:
+    #         addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+    #     except:
+    #         Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'tamilray' in url and 'tamildhool' in source:
+        movieurl = tamildhool.resolve_tamilray(url)
         try:
-            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+           addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
-            Dialog().ok('XBMC', 'Unable to locate video')
+           Dialog().ok('XBMC', 'Unable to locate video')
     elif 'vidorg' in url and 'movierulz' in source:
         movieurl = vidorgnet.resolve_vidorgnet(url)
         try:
