@@ -7,7 +7,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion
 import json,os,xbmcvfs
 
 # To get help and inspect or debug the code use xbmc.log() or set_trace()
@@ -168,7 +168,7 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
 #streamurl regex groupname ex: (?P<streamurl>.*?)   the streamurl can be captured in the key value of the dictionary and can be used for further logic
 @plugin.route('/liststreamurl/<path:url>/<get_stream_url_regex>')
 def liststreamurl(url,get_stream_url_regex):
-    # web_pdb.set_trace()
+    #web_pdb.set_trace()
     get_stream_url_regex = urllib.parse.unquote_plus(get_stream_url_regex)
     try:
         data = getdatacontent_dict(url,get_stream_url_regex)
@@ -327,6 +327,12 @@ def resolvelink(url,source):
 
     elif 'vidmx' in url:
         movieurl = vidmx.resolve_vidmx(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'geo.dailymotion' in url:
+        movieurl = geodailymotion.resolve_geodailymotion(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
