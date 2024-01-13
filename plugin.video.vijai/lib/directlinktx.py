@@ -44,7 +44,7 @@ def getredirectedurl(url):
     except Exception as e:
         Dialog().ok('XBMC', str(e))
 
-def resolve_directlinktx(url):
+def resolve_directlinktx(url,source):
     #web_pdb.set_trace()
     reg = 'class=\"main-button\sdlbutton\"\shref=\"(.*?)\"'
     data = getdatacontent(url,reg)
@@ -79,12 +79,14 @@ def resolve_directlinktx(url):
                         msg = url
                         Dialog().ok(msg, 'Resolve URL', 5000)
                     return False
-                return stream_url
+                source = "Netutv"
+                return stream_url,source
         else:
             try:
+                source = ""
                 movieurl = urlresolver.HostedMediaFile(data) 
                 movieurl = movieurl.resolve()
-                return movieurl
+                return movieurl,source
             except Exception as e:
                 Dialog().ok('XBMC', str(e)) 
 

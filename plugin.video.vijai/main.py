@@ -190,7 +190,9 @@ def liststreamurl(url,get_stream_url_regex):
                                 pass
                             else:
                                 streamurl = urllib.parse.quote_plus(item['streamurl'])
-                                title = cleantitle(item['streamtitle'])
+                                title = urllib.parse.unquote_plus(item['streamtitle'])
+                                # Title needs to be cleaned but having an error with htmlparser module
+                                #title = cleantitle(title)
                                 url = urllib.parse.quote_plus(url)
                                 addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
             else:
@@ -325,10 +327,13 @@ def resolvelink(url,source):
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'directlinktx' in url:
         #web_pdb.set_trace()
-        movieurl = directlinktx.resolve_directlinktx(url)
+        movieurl = directlinktx.resolve_directlinktx(url,source)
         try:
             #setResolvedUrl(plugin.handle, True,listitem=play_item1)
-            addDirectoryItem(plugin.handle,plugin.url_for(playlink,movieurl),ListItem('click the link'),True)
+            if movieurl[1] == 'Netutv':
+                addDirectoryItem(plugin.handle,plugin.url_for(playlink,movieurl[0]),ListItem('click the link'),True)
+            else:
+                addDirectoryItem(plugin.handle,url=movieurl[0],listitem=play_item,isFolder=False) 
             #xbmc.Player().play(movieurl)
             #addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:

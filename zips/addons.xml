@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <addons>
 <addon id="plugin.video.vijai"
-version="3.0.59"
+version="3.0.60"
 name="vijai"
 provider-name="vijai">
 <requires>
@@ -23,7 +23,9 @@ provider-name="vijai">
     <icon>icon.png</icon>
   </assets>
   <news>
-    v3.0.58 (13/01/2024)
+    v3.0.60 (13/01/2024)
+      - fixed movierulz
+    v3.0.59 (13/01/2024)
       - fixed movierulz
     v3.0.58 (02/12/2023)
       - fixed tamilYOGI
