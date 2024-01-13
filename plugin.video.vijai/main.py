@@ -7,13 +7,20 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay, vcdnlare, directlinktx
 import json,os,xbmcvfs
+from six.moves.html_parser import HTMLParser
+import xbmc
 
 # To get help and inspect or debug the code use xbmc.log() or set_trace()
 # xbmc.log(url)
 # Place this line to trace the error
 # web_pdb.set_trace()
+def cleantitle(title):
+    h = HTMLParser()
+    cleanedtitle =h.unescape(title)
+    return cleanedtitle
+
 def getdatacontent_dict(url,reg):
     proxy_handler = urllib.request.ProxyHandler({})
     opener = urllib.request.build_opener(proxy_handler)
@@ -24,6 +31,7 @@ def getdatacontent_dict(url,reg):
     r = re.compile(reg)
     data = [m.groupdict() for m in r.finditer(html)]
     return data
+
 
 def getdatacontent_membednet_dict(url,reg):
     headers = {
@@ -174,7 +182,6 @@ def liststreamurl(url,get_stream_url_regex):
         data = getdatacontent_dict(url,get_stream_url_regex)
         blacklists = ['goblogportal']
         for item in data:
-            #web_pdb.set_trace()
             if ('streamtitle'in item) and ('streamurl'in item):
                     #This loop helps list the titles of the stream provider ex; playarivalam, streamtape,vimeo etc
                     if item['streamurl']:
@@ -183,7 +190,7 @@ def liststreamurl(url,get_stream_url_regex):
                                 pass
                             else:
                                 streamurl = urllib.parse.quote_plus(item['streamurl'])
-                                title = urllib.parse.quote_plus(item['streamtitle'])
+                                title = cleantitle(item['streamtitle'])
                                 url = urllib.parse.quote_plus(url)
                                 addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
             else:
@@ -247,6 +254,7 @@ def liststreamurl(url,get_stream_url_regex):
 @plugin.route('/resolvelink/<path:url>/<source>')
 #source variable is used for resolving custom resolver coming from source site ex: videobin.co from movierulz can be routed particular if loop, the rest will be resolved by urlresolver
 def resolvelink(url,source):
+    #web_pdb.set_trace()
     url = urllib.parse.unquote_plus(url)
     source = urllib.parse.unquote_plus(source)
     play_item = ListItem('click to play the link')
@@ -291,6 +299,12 @@ def resolvelink(url,source):
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'vcdnlare' in url:
+        movieurl = vcdnlare.resolve_vcdnlare(url,source)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
     elif 'myfeminist' in url:
         movieurl = myfeminist.resolve_myfeminist(url)
         try:
@@ -307,6 +321,16 @@ def resolvelink(url,source):
         movieurl = downlscr.resolve_downlscr(url)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'directlinktx' in url:
+        #web_pdb.set_trace()
+        movieurl = directlinktx.resolve_directlinktx(url)
+        try:
+            #setResolvedUrl(plugin.handle, True,listitem=play_item1)
+            addDirectoryItem(plugin.handle,plugin.url_for(playlink,movieurl),ListItem('click the link'),True)
+            #xbmc.Player().play(movieurl)
+            #addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'downlsr' in url:
@@ -459,6 +483,13 @@ def resolvelink(url,source):
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     endOfDirectory(plugin.handle)
+
+@plugin.route('/playlink/<path:url>')
+#source variable is used for resolving custom resolver coming from source site ex: videobin.co from movierulz can be routed particular if loop, the rest will be resolved by urlresolver
+def playlink(url):
+    url = urllib.parse.unquote_plus(url)
+    xbmc.Player().play(url)
+    return False
 
 
 if __name__ == '__main__':
