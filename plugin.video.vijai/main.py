@@ -298,7 +298,11 @@ def resolvelink(url,source):
     elif 'vidplay' in url:
         movieurl = vidplay.resolve_vidplay(url,source)
         try:
-            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+            for item in movieurl:
+                title = 'click to play the link:'+item[1]
+                play_item = ListItem(title)
+                url = item[0].replace("\"","")
+                addDirectoryItem(plugin.handle,url=url,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'vcdnlare' in url:

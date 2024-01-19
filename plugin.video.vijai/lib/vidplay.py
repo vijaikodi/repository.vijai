@@ -62,7 +62,21 @@ def resolve_vidplay(url,source):
     html = response.text
     data = re.compile(reg).findall(html)
     if data:
-        streamurl = data[0]
+        streamurl = []
+        for item in data:
+            if 'label' in item:
+                temp= []
+                url = item.split(',')
+                temp.append(url[0])
+                temp.append(url[1])
+                streamurl.append(temp)
+            else:
+                temp = []
+                title = 'm3u8-stream link'
+                temp.append(item)
+                temp.append(title)
+                streamurl.append(temp)
+
         return streamurl
     else:
         return None
