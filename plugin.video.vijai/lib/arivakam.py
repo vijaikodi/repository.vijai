@@ -30,7 +30,6 @@ def getdatacontent(url,reg):
     html = resp.text
     xbmc.log(html)
     data = re.compile(reg).findall(html)
-    xbmc.log(str(data))
     return data
 def getredirectedurl(url):
     try:
@@ -41,38 +40,64 @@ def getredirectedurl(url):
 
 def resolve_arivakam(url,source):
     #web_pdb.set_trace()
-    id = url.split('=')
+    ##Player3.arivakam.net
+    id = url.split('/')
     id = id [-1]
     headers = {
-    'authority': 'player2.arivakam.net',
-    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-    'accept-language': 'en-US,en;q=0.9,ta-IN;q=0.8,ta;q=0.7,fr-FR;q=0.6,fr;q=0.5',
-    'dnt': '1',
-    'referer': source,
-    'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"',
-    'sec-ch-ua-mobile': '?0',
-    'sec-ch-ua-platform': '"Windows"',
-    'sec-fetch-dest': 'iframe',
-    'sec-fetch-mode': 'navigate',
-    'sec-fetch-site': 'cross-site',
-    'upgrade-insecure-requests': '1',
-    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    'accept': 'application/json, text/plain, */*',
+    'accept-language': 'en-US,en;q=0.9',
+    'referer': url,
+    'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
     }
 
     params = {
         'id': id,
     }
 
-    response = requests.get('https://player2.arivakam.net/player/', params=params, headers=headers)
-
-    reg = '\"file\":\"(.*?)\"'
-    html = response.text
-    data = re.compile(reg).findall(html)
+    response = requests.get('https://player3.arivakam.net/api/movie', params=params, headers=headers)
+    data = response.text
+    reg = '\"urlStream\":\"(.*?)\"'
+    data = re.compile(reg).findall(data)
     if data:
         streamurl = data[0]
         return streamurl
     else:
         return None
+
+    
+    ## Player2.arivakam.com
+    # id = url.split('=')
+    # id = id [-1]
+    # headers = {
+    # 'authority': 'player2.arivakam.net',
+    # 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+    # 'accept-language': 'en-US,en;q=0.9,ta-IN;q=0.8,ta;q=0.7,fr-FR;q=0.6,fr;q=0.5',
+    # 'dnt': '1',
+    # 'referer': source,
+    # 'sec-ch-ua': '"Not.A/Brand";v="8", "Chromium";v="114", "Google Chrome";v="114"',
+    # 'sec-ch-ua-mobile': '?0',
+    # 'sec-ch-ua-platform': '"Windows"',
+    # 'sec-fetch-dest': 'iframe',
+    # 'sec-fetch-mode': 'navigate',
+    # 'sec-fetch-site': 'cross-site',
+    # 'upgrade-insecure-requests': '1',
+    # 'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36',
+    # }
+
+    # params = {
+    #     'id': id,
+    # }
+
+    # response = requests.get('https://player2.arivakam.net/player/', params=params, headers=headers)
+
+    # reg = '\"file\":\"(.*?)\"'
+    # html = response.text
+    # data = re.compile(reg).findall(html)
+    # if data:
+    #     streamurl = data[0]
+    #     return streamurl
+    # else:
+    #     return None
 
 
 
