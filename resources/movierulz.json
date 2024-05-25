@@ -1,6 +1,6 @@
 [
 {
-"url": "https://www.5movierulz.tube/category/tamil-movies-2024",
+"url": "https://www.5movierulz.land/category/tamil-movie/",
 "title": "movierulz-Tamil",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -8,7 +8,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://www.5movierulz.tube/category/telugu-movies-2024",
+"url": "https://www.5movierulz.land/category/telugu-movie/",
 "title": "movierulz-Telugu",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -16,7 +16,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
  },
 {
-"url": "https://www.5movierulz.tube/category/bollywood-movies-2024",
+"url": "https://www.5movierulz.land/category/bollywood-movie-2024/",
 "title": "movierulz-Hindi",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -24,7 +24,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://www.5movierulz.tube/category/malayalam-movies-2024",
+"url": "https://www.5movierulz.land/category/malayalam-movie/",
 "title": "movierulz-Malayalam",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -32,7 +32,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://www.5movierulz.tube/category/hollywood-movies-2024",
+"url": "https://www.5movierulz.land/category/hollywood-movie-2023/",
 "title": "movierulz-Hollywood",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -40,8 +40,8 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 { 
-"url": "https://www.5movierulz.tube/language/tamil-dubbed",
-"title": "Tamil-dubbed",
+"url": "https://www.5movierulz.land/category/multi-audio-dubbed-movies/",
+"title": "multi-audio-dubbed-movies",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "<p><strong>(?P<streamtitle>.*?)<\\\/strong><br \\\/>\\s+<a href=\\\"(?P<streamurl>.*?)\\\"",
