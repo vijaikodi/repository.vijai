@@ -60,6 +60,7 @@ def resolve_arivakam(url,source):
     data = re.compile(reg).findall(data)
     if data:
         streamurl = data[0]
+        streamurl = streamurl.strip()
         return streamurl
     else:
         return None
