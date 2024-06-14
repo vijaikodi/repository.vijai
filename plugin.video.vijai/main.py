@@ -7,7 +7,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay, vcdnlare, directlinktx
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay, vcdnlare, directlinktx, filelinkzr
 import json,os,xbmcvfs
 from six.moves.html_parser import HTMLParser
 import xbmc
@@ -332,6 +332,19 @@ def resolvelink(url,source):
     elif 'directlinktx' in url:
         #web_pdb.set_trace()
         movieurl = directlinktx.resolve_directlinktx(url,source)
+        try:
+            #setResolvedUrl(plugin.handle, True,listitem=play_item1)
+            if movieurl[1] == 'Netutv':
+                addDirectoryItem(plugin.handle,plugin.url_for(playlink,movieurl[0]),ListItem('click the link'),True)
+            else:
+                addDirectoryItem(plugin.handle,url=movieurl[0],listitem=play_item,isFolder=False) 
+            #xbmc.Player().play(movieurl)
+            #addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'filelinkzr' in url:
+        #web_pdb.set_trace()
+        movieurl = filelinkzr.resolve_filelinkzr(url,source)
         try:
             #setResolvedUrl(plugin.handle, True,listitem=play_item1)
             if movieurl[1] == 'Netutv':
