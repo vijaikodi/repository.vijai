@@ -4,7 +4,7 @@
 "title": "TamilDhool-Vijay-Tv-Shows",
 "content_type":"Normal",
 "get_site_content_regex": "<div class=\\\"post-thumb\\\"><a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s+<img\\swidth=\\\"(.*?)\\\"\\sheight=\\\"(.*?)\\\"\\ssrc=\\\"(?P<poster>.*?)\\\"",
-"get_stream_url_regex": "data-lazy-src=\\\"(?P<streamurl>.*?)\\\"><\\\/iframe>",
+"get_stream_url_regex": "<figure class=\"wp-block-image alignwide size-full\"><a href=\\\"(?P<tamildhool_streamurl>.*?)\\\"",
 "get_nav_data_regex": "None"
 }
 ]
