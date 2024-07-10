@@ -1,6 +1,6 @@
 [
 {
-"url": "https://www.5movierulz.land/category/tamil-movie/",
+"url": "https://www.5movierulz.place/category/tamil-movie/",
 "title": "movierulz-Tamil",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -8,7 +8,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://www.5movierulz.land/category/telugu-movie/",
+"url": "https://www.5movierulz.place/category/telugu-movie/",
 "title": "movierulz-Telugu",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -16,7 +16,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
  },
 {
-"url": "https://www.5movierulz.land/category/bollywood-movie-2024/",
+"url": "https://www.5movierulz.place/category/bollywood-movie-2024/",
 "title": "movierulz-Hindi",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -24,7 +24,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://www.5movierulz.land/category/malayalam-movie/",
+"url": "https://www.5movierulz.place/category/malayalam-movie/",
 "title": "movierulz-Malayalam",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -32,7 +32,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 {
-"url": "https://www.5movierulz.land/category/hollywood-movie-2023/",
+"url": "https://www.5movierulz.place/category/hollywood-movie-2023/",
 "title": "movierulz-Hollywood",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
@@ -40,7 +40,7 @@
 "get_nav_data_regex": "<a href=\\\"(?P<navlink>.*?)\\\"(\\s|)>&larr;(\\s|)Older Entries"
 },
 { 
-"url": "https://www.5movierulz.land/category/multi-audio-dubbed-movies/",
+"url": "https://www.5movierulz.place/category/multi-audio-dubbed-movies/",
 "title": "multi-audio-dubbed-movies",
 "content_type":"Normal",
 "get_site_content_regex": "<a href=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\">\\s*<img width=\\\"\\d+\\\" height=\\\"\\d+\\\" src=\\\"(?P<poster>.*?)\\\"",
