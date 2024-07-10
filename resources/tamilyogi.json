@@ -1,6 +1,6 @@
 [
 {
-"url": "https://tamilyogi.show/category/tamilyogi-full-movie-online/",
+"url": "https://tamilyogi.blog/category/tamilyogi-full-movie-online/",
 "title": "TamilYogi-NewMovies",
 "content_type":"Normal",
 "get_site_content_regex": "<a class=\\\"post-thumbnail\\\" href=\\\"(?P<pageurl>.*?)\\\">\\s+<img width=\\\"(.*?)\\\" height=\\\"(.*?)\\\" src=\\\"(?P<poster>.*?)\\\" class=\\\"(.*?)\\\" alt=\\\"(?P<title>.*?)\\\"",
@@ -8,7 +8,7 @@
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
 }, 
 {
-"url": "https://tamilyogi.show/category/tamilyogi-bluray-movies/",
+"url": "https://tamilyogi.blog/category/tamilyogi-bluray-movies/",
 "title": "TamilYogi-HDMovies",
 "content_type":"Normal",
 "get_site_content_regex": "<a class=\\\"post-thumbnail\\\" href=\\\"(?P<pageurl>.*?)\\\">\\s+<img width=\\\"(.*?)\\\" height=\\\"(.*?)\\\" src=\\\"(?P<poster>.*?)\\\" class=\\\"(.*?)\\\" alt=\\\"(?P<title>.*?)\\\"",
@@ -16,7 +16,7 @@
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
 },
 {
-"url": "https://tamilyogi.show/category/tamilyogi-dubbed-movies-online/",
+"url": "https://tamilyogi.blog/category/tamilyogi-dubbed-movies-online/",
 "title": "TamilYogi-DubbedMovies",
 "content_type":"Normal",
 "get_site_content_regex": "<a class=\\\"post-thumbnail\\\" href=\\\"(?P<pageurl>.*?)\\\">\\s+<img width=\\\"(.*?)\\\" height=\\\"(.*?)\\\" src=\\\"(?P<poster>.*?)\\\" class=\\\"(.*?)\\\" alt=\\\"(?P<title>.*?)\\\"",
@@ -24,7 +24,7 @@
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
 },
 {
-"url": "https://tamilyogi.show/category/tamil-web-series/",
+"url": "https://tamilyogi.blog/category/tamil-web-series/",
 "title": "TamilYogi-WebSeries",
 "content_type":"Normal",
 "get_site_content_regex": "<a class=\\\"post-thumbnail\\\" href=\\\"(?P<pageurl>.*?)\\\">\\s+<img width=\\\"(.*?)\\\" height=\\\"(.*?)\\\" src=\\\"(?P<poster>.*?)\\\" class=\\\"(.*?)\\\" alt=\\\"(?P<title>.*?)\\\"",
