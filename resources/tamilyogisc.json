@@ -3,7 +3,7 @@
 "url": "https://tamilyogi.sc/movies/",
 "title": "Tamilyogisc",
 "content_type":"Normal",
-"get_site_content_regex": "a href=\\\"(.*?)(?P<pageurl>.*?)\\\"\\sdata-url=\\\"(.*?)\\\"\\srel=\\\"(.*?)\\\"\\starget=\\\"(.*?)\\\"\\sclass=\\\"(.*?)\\\"\\sdata-hasqtip=\\\"(.*?)\\\"\\soldtitle=\\\"(.*?)\\\" title=\\\"(.*?)\\\"\\saria-describedby=\\\"(.*?)\\\">\\s<span class=\\\"mli-quality\\\">(.*?)<\\\/span><img fifu-featured=\\\"(.*?)\\\"\\ssrc=\\\"(.*?)(?P<poster>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\salt=\\\"(.*?)\\\"\\stitle=\\\"(.*?)(?P<title>.*?)\\\"",
+"get_site_content_regex": "a href=\\\"(?P<pageurl>.*?)\\\"\\sdata-url=\\\"(.*?)\\\"\\srel=\\\"(.*?)\\\"\\starget=\\\"(.*?)\\\"\\sclass=\\\"(.*?)\\\"\\sdata-hasqtip=\\\"(.*?)\\\"\\soldtitle=\\\"(.*?)\\\" title=\\\"(.*?)\\\"\\saria-describedby=\\\"(.*?)\\\">\\s<span class=\\\"mli-quality\\\">(.*?)<\\\/span><img fifu-featured=\\\"(.*?)\\\"\\ssrc=\\\"(?P<poster>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\salt=\\\"(.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"",
 "get_stream_url_regex": "",
 "get_nav_data_regex": ""
 }
