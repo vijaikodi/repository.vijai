@@ -4,7 +4,7 @@
 "title": "Tamilyogisc",
 "content_type":"Normal",
 "get_site_content_regex": "div data-movie-id=\\\"(.*?)a href=\\\"(?P<pageurl>.*?)\\\" (.*?)title=\\\"(?P<title>.*?)\\\"(.*?)src=\\\"(?P<poster>.*?)\\\"",
-"get_stream_url_regex": "<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<streamurl>.*?)\\\"",
+"get_stream_url_regex": "li data-value=\\\"(?P<streamurl>.*?)\\\" class=\\\"option",
 "get_nav_data_regex": "<a class=\\\"next page-numbers\\\" href=\\\"(?P<navlink>.*?)\\\""
 }
 ]
