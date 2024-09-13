@@ -7,10 +7,12 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay, vcdnlare, directlinktx, filelinkzr
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay, vcdnlare, directlinktx, filelinkzr,viralweb8, thrfiveio
 import json,os,xbmcvfs
 from six.moves.html_parser import HTMLParser
 import xbmc
+import random
+import base64
 from resolveurl.lib import unjuice2
 
 # To get help and inspect or debug the code use xbmc.log() or set_trace()
@@ -76,6 +78,30 @@ def getredirectedurl(url):
     except Exception as e:
         Dialog().ok('XBMC', str(e))
 
+def is_absolute(url):
+    return bool(urllib.parse.urlparse(url).netloc)
+def is_scheme(url):
+    parsed_url = urllib.parse.urlparse(url)
+    return bool(parsed_url.scheme)
+
+def jimkimble_redirectedurl(url):
+    # Step 1: Parse the original URL
+    original_url = url
+    # Step 2: Extract JavaScript logic (domains and redirect logic)
+    domains = ['https://www.jimkimble.com']
+    # Randomly select a number between 1 and 4
+    random_number = random.randint(1, 4)
+    # Simulate the redirection based on the original JavaScript logic
+    new_url = f"{domains[0]}/watch{random_number}.html"
+    # Step 3: Append the original hash (URL fragment) to the new URL
+    parsed_url = urllib.parse.urlparse(original_url)
+    url_fragment = parsed_url.fragment  # Extract the fragment part (after the #)
+    # Combine the new base URL with the fragment
+    final_redirect_url = f"{new_url}#{url_fragment}"
+    # Print the final redirected URL
+    #print("Redirected URL:", final_redirect_url)
+    return(final_redirect_url)
+
 def loadmainlist(url,title,get_site_content_regex,get_stream_url_regex,get_nav_data_regex):
     url = getredirectedurl(url)
     get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
@@ -107,6 +133,7 @@ def index():
 
 @plugin.route('/listsites/<path:url>/<title>')
 def listsites(url,title):
+    #web_pdb.set_trace()
     url = urllib.parse.unquote_plus(url)
     response = requests.get(url)
     responsetext = response.text
@@ -158,18 +185,35 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
     data = getdatacontent_dict(url,get_site_content_regex)
     nav = getdatacontent_dict(url,get_nav_data_regex)
     for item in data:
+        #web_pdb.set_trace()
         listitem = xbmcgui.ListItem(item['title'])
         #ListItem.setLabel(item['title'])
-        listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
+        if is_scheme(item['poster']):
+            listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
+        else:
+            base = urllib.parse.urlparse(item['poster'])
+            base_new = base._replace(scheme='https')
+            item['poster'] = urllib.parse.urlunparse(base_new)
+            listitem.setArt({ 'poster': item['poster'], 'thumb' : item['poster']})
         #addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), ListItem(label=item['title'],icon=item['poster']),True)
+        if 'synctogethr.com' in item['pageurl']:
+            item['pageurl'] = jimkimble_redirectedurl(item['pageurl'])
+            item['pageurl'] = urllib.parse.quote_plus(item['pageurl'])
         addDirectoryItem(plugin.handle,plugin.url_for(liststreamurl,item['pageurl'],get_stream_url_regex), listitem,True)
     if nav:
+        #web_pdb.set_trace()
         get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
         get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
         nav = nav[0]
         if nav['navlink']:
             nav = nav['navlink']
-            addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
+            if is_absolute(nav):
+                addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
+            else:
+                base = urllib.parse.urlparse(url)
+                base_new = base._replace(path=nav)
+                nav = urllib.parse.urlunparse(base_new)
+                addDirectoryItem(plugin.handle,plugin.url_for(getsitecontent,nav,get_site_content_regex,get_nav_data_regex,get_stream_url_regex),ListItem("[B]Next Page...[/B]"),True)
     endOfDirectory(plugin.handle)
 
 
@@ -179,132 +223,150 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
 def liststreamurl(url,get_stream_url_regex):
     #web_pdb.set_trace()
     get_stream_url_regex = urllib.parse.unquote_plus(get_stream_url_regex)
-    try:
-        data = getdatacontent_dict(url,get_stream_url_regex)
-        blacklists = ['goblogportal']
-        for item in data:
-            if ('streamtitle'in item) and ('streamurl'in item):
-                    #This loop helps list the titles of the stream provider ex; playarivalam, streamtape,vimeo etc
-                    if item['streamurl']:
-                        for blacklist in blacklists:
-                            if blacklist in item['streamurl']:
-                                pass
-                            else:
-                                streamurl = urllib.parse.quote_plus(item['streamurl'])
-                                title = urllib.parse.unquote_plus(item['streamtitle'])
-                                # Title needs to be cleaned but having an error with htmlparser module
-                                #title = cleantitle(title)
-                                url = urllib.parse.quote_plus(url)
-                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
-            else:
-                for key, value in list(item.items()):
-                    if "tamildhool_url" in key:
-                        if "insighthubnews" in value:
-                            url = urllib.parse.unquote_plus(value)
-                            reg ='<noscript><iframe style=\"(.*?)\"\sframeborder=\"0\"\stype=\"(.*?)\" src=\"(?P<streamurl>(.|\n)*?)\"'
-                            data = getdatacontent_dict(url,reg)
-                            source = "tamildhool"
-                            for item in data:
-                                if 'dailymotion' in item['streamurl']:
-                                    url = item['streamurl']
-                                    url = url.split('\n')
-                                    url = url[0]
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('dailymotion'),True)
-                        if "globalnewsphere" in value:
-                            url = urllib.parse.unquote_plus(value)
-                            reg ='iframe style=\"(.*?)\" frameborder=\"0\" type=\"(.*?)\" src=\"(?P<streamurl>(.|\n)*?)\"'
-                            data = getdatacontent_dict(url,reg)
-                            source = "tamildhool"
-                            for item in data:
-                                if 'thrfive.io' in item['streamurl']:
-                                    url = item['streamurl']
-                                    url = url.replace('\n','')
-                                    headers = {
-                                            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                                            'accept-language': 'en-US,en;q=0.9',
-                                            'priority': 'u=0, i',
-                                            'referer': 'https://globalnewsphere.com/',
-                                            'sec-ch-ua': '"Google Chrome";v="125", "Chromium";v="125", "Not.A/Brand";v="24"',
-                                            'sec-ch-ua-mobile': '?0',
-                                            'sec-ch-ua-platform': '"Windows"',
-                                            'sec-fetch-dest': 'iframe',
-                                            'sec-fetch-mode': 'navigate',
-                                            'sec-fetch-site': 'cross-site',
-                                            'upgrade-insecure-requests': '1',
-                                            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-                                        }
-                                    response = requests.get(url, headers=headers)
-                                    data = response.text
-                                    reg = '<script type="application\/javascript">(.*?)<\/script>'
-                                    code = re.compile(reg).findall(data)
-                                    temp = unjuice2.run(code[0]) 
-                                    reg = 'mpegURL\",\"file\":\"(.*?)\"'
-                                    url =  re.compile(reg).findall(temp)
-                                    url = url[0].replace("\\","")
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('thrfive.io'),True)
-                                if 'dailymotion' in item['streamurl']:
-                                    url = item['streamurl']
-                                    url = url.split('\n')
-                                    url = url[0]
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('dailymotion'),True)
-                                    
-
-
-                    if "hindilinks4u_streamurl" in key:
-                        if 'membed.net'in value:
-                            if value:
-                                url = urllib.parse.unquote_plus(value)
-                                reg = "<div class=\"dowload\"><a\s+href=\"(?P<streamurl>.*?)\"\starget=\'_blank\'>(?P<title>.*?)<\/a>"
-                                data = getdatacontent_membednet_dict(url,reg)
-                                source = "hindilinks4u"
-                                for item in data:
-                                    if 'sbplay2' in item['streamurl']:
-                                        url = item['streamurl']
-                                        url = url.split('?')
-                                        url = url[0]
-                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
-                                    if 'dood' in item['streamurl']:
-                                        url = item['streamurl']
-                                        url = url.split('?')
-                                        url = url[0]
-                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
-                                    if 'embedsito' in item['streamurl']:
-                                        url = item['streamurl']
-                                        url = url.split('#')
-                                        url = url[0]
-                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
-                                    if 'mixdrop' in item['streamurl']:
-                                        url = item['streamurl']
-                                        url = url.split('?')
-                                        url = url[0]
-                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
-                    if 'streamurl'in key:
+    url = urllib.parse.unquote_plus(url)
+    if 'jimkimble' in url:
+        temp_url = urllib.parse.parse_qs(urllib.parse.urlparse(url).fragment).get('urls')
+        urls = base64.b64decode(temp_url[0])
+        urls = json.loads(urls.decode('utf-8'))
+        if urls:
+            for key,value in urls.items():
+                title = key
+                streamurl = urllib.parse.quote_plus(value)
+                url = urllib.parse.quote_plus(url)
+                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+        endOfDirectory(plugin.handle)
+    else:
+        try:
+            data = getdatacontent_dict(url,get_stream_url_regex)
+            blacklists = ['goblogportal']
+            for item in data:
+                if ('streamtitle'in item) and ('streamurl'in item):
                         #This loop helps list the titles of the stream provider ex; playarivalam, streamtape,vimeo etc
-                        if value:
+                        if item['streamurl']:
                             for blacklist in blacklists:
-                                if blacklist in value:
+                                if blacklist in item['streamurl']:
                                     pass
                                 else:
-                                    streamurl = urllib.parse.quote_plus(value)
-                                    title = value.split('/')
-                                    title = title[2]+'-Link'
+                                    streamurl = urllib.parse.quote_plus(item['streamurl'])
+                                    title = urllib.parse.unquote_plus(item['streamtitle'])
+                                    # Title needs to be cleaned but having an error with htmlparser module
+                                    #title = cleantitle(title)
                                     url = urllib.parse.quote_plus(url)
                                     addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
-                    if 'unescape'in key:
-                        if value:
-                            linkcode = urllib.parse.unquote_plus(value)
-                            if "iframe src=" in linkcode:
-                                sources = re.findall('<iframe.+?src="([^"]+)', linkcode)
-                                for source in sources:
-                                    streamurl = urllib.parse.quote_plus(source)
-                                    title = source.split('/')
-                                    title = title[2]+'-Link'
-                                    url = urllib.parse.quote_plus(url)
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
-        endOfDirectory(plugin.handle)
-    except:
-        endOfDirectory(plugin.handle)
-        Dialog().ok('Loading site content', 'Unable to load this site')
+                else:
+                    for key, value in list(item.items()):
+                        if "tamildhool_url" in key:
+                            if "insighthubnews" in value:
+                                url = urllib.parse.unquote_plus(value)
+                                reg ='<noscript><iframe style=\"(.*?)\"\sframeborder=\"0\"\stype=\"(.*?)\" src=\"(?P<streamurl>(.|\n)*?)\"'
+                                data = getdatacontent_dict(url,reg)
+                                source = "tamildhool"
+                                for item in data:
+                                    if 'dailymotion' in item['streamurl']:
+                                        url = item['streamurl']
+                                        url = url.split('\n')
+                                        url = url[0]
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('dailymotion'),True)
+                            if "globalnewsphere" in value:
+                                #web_pdb.set_trace()
+                                url = urllib.parse.unquote_plus(value)
+                                reg ='iframe style=\"(.*?)\" frameborder=\"0\" type=\"(.*?)\" src=\"(?P<streamurl>(.|\n)*?)\"'
+                                data = getdatacontent_dict(url,reg)
+                                source = "tamildhool"
+                                for item in data:
+                                    if 'thrfive.io' in item['streamurl']:
+                                        #web_pdb.set_trace()
+                                        url = item['streamurl']
+                                        url = url.replace('\n','')
+                                        headers = {
+                                                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                                                'accept-language': 'en-US,en;q=0.9',
+                                                #'priority': 'u=0, i',
+                                                #'Connection': 'keep-alive',
+                                                #'Host': 'thrfive.io',
+                                                'referer': 'https://globalnewsphere.com/',
+                                                #'sec-ch-ua': '"Google Chrome";v="128", "Chromium";v="125", "Not.A/Brand";v="24"',
+                                                #'sec-ch-ua-mobile': '?0',
+                                                # 'sec-ch-ua-platform': '"Windows"',
+                                                # 'sec-fetch-dest': 'iframe',
+                                                # 'sec-fetch-mode': 'navigate',
+                                                # 'sec-fetch-site': 'cross-site',
+                                                # 'upgrade-insecure-requests': '1',
+                                                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
+                                            }
+                                        response = requests.get(url, headers=headers)
+                                        data = response.text
+                                        reg = '<script type="application\/javascript">(.*?)<\/script>'
+                                        code = re.compile(reg).findall(data)
+                                        temp = unjuice2.run(code[0]) 
+                                        reg = 'mpegURL\",\"file\":\"(.*?)\"'
+                                        url =  re.compile(reg).findall(temp)
+                                        url = url[0].replace("\\","")
+                                        play_item = ListItem('click to play the link')
+                                        play_item.setInfo( type="Video", infoLabels=None)
+                                        play_item.setProperty('IsPlayable', 'true')
+                                        addDirectoryItem(plugin.handle,url=url,listitem=play_item,isFolder=False)
+                                        #addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('thrfive.io'),True)
+                                    if 'dailymotion' in item['streamurl']:
+                                        url = item['streamurl']
+                                        url = url.split('\n')
+                                        url = url[0]
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('dailymotion'),True)
+                        if "hindilinks4u_streamurl" in key:
+                            if 'membed.net'in value:
+                                if value:
+                                    url = urllib.parse.unquote_plus(value)
+                                    reg = "<div class=\"dowload\"><a\s+href=\"(?P<streamurl>.*?)\"\starget=\'_blank\'>(?P<title>.*?)<\/a>"
+                                    data = getdatacontent_membednet_dict(url,reg)
+                                    source = "hindilinks4u"
+                                    for item in data:
+                                        if 'sbplay2' in item['streamurl']:
+                                            url = item['streamurl']
+                                            url = url.split('?')
+                                            url = url[0]
+                                            addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                                        if 'dood' in item['streamurl']:
+                                            url = item['streamurl']
+                                            url = url.split('?')
+                                            url = url[0]
+                                            addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                                        if 'embedsito' in item['streamurl']:
+                                            url = item['streamurl']
+                                            url = url.split('#')
+                                            url = url[0]
+                                            addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                                        if 'mixdrop' in item['streamurl']:
+                                            url = item['streamurl']
+                                            url = url.split('?')
+                                            url = url[0]
+                                            addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem(item['title']),True)
+                        if 'streamurl'in key:
+                            #This loop helps list the titles of the stream provider ex; playarivalam, streamtape,vimeo etc
+                            if value:
+                                for blacklist in blacklists:
+                                    if blacklist in value:
+                                        pass
+                                    else:
+                                        streamurl = urllib.parse.quote_plus(value)
+                                        title = value.split('/')
+                                        title = title[2]+'-Link'
+                                        url = urllib.parse.quote_plus(url)
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+                        if 'unescape'in key:
+                            if value:
+                                linkcode = urllib.parse.unquote_plus(value)
+                                if "iframe src=" in linkcode:
+                                    sources = re.findall('<iframe.+?src="([^"]+)', linkcode)
+                                    for source in sources:
+                                        streamurl = urllib.parse.quote_plus(source)
+                                        title = source.split('/')
+                                        title = title[2]+'-Link'
+                                        url = urllib.parse.quote_plus(url)
+                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
+            endOfDirectory(plugin.handle)
+        except:
+            endOfDirectory(plugin.handle)
+            Dialog().ok('Loading site content', 'Unable to load this site')
 
 @plugin.route('/resolvelink/<path:url>/<source>')
 #source variable is used for resolving custom resolver coming from source site ex: videobin.co from movierulz can be routed particular if loop, the rest will be resolved by urlresolver
@@ -351,6 +413,16 @@ def resolvelink(url,source):
         movieurl = arivakam.resolve_arivakam(url,source)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'viralweb8' in url:
+        movieurl = viralweb8.resolve_viralweb8(url,source)
+        try:
+            for item in movieurl:
+                title = 'click to play the link:'+item['quality']
+                play_item = ListItem(title)
+                url = item['url']
+                addDirectoryItem(plugin.handle,url=url,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'vidplay' in url:
@@ -415,6 +487,12 @@ def resolvelink(url,source):
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'downlsr' in url:
         movieurl = downlsr.resolve_downlsr(url)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'thrfive' in url:
+        movieurl = thrfiveio.resolve_thrfiveio(url,source)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
