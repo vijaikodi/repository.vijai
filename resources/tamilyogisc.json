@@ -5,6 +5,6 @@
 "content_type":"Normal",
 "get_site_content_regex": "div data-movie-id=\\\"(.*?)a href=\\\"(?P<pageurl>.*?)\\\" (.*?)title=\\\"(?P<title>.*?)\\\"(.*?)src=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "None",
-"get_nav_data_regex": "<li class=\\\"active\\\"><a class=\\\"\\\">(.*?)<\/a><\/li><li><a rel=\\\"nofollow\\\" class=\\\"page larger\\\" href=\\\"(?P<navlink>.*?)\\\""
+"get_nav_data_regex": "<a rel=\\'nofollow\\' class=\\'page larger\\' href=\\'(?P<navlink>.*?)\\'"
 }
 ]
