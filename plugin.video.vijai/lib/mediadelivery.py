@@ -39,31 +39,37 @@ def get_redirect_url(url, headers={}):
     return response.geturl()
 
 
-def resolve_thrfiveio(url,source):
+def resolve_mediadelivery(url,source):
     #web_pdb.set_trace()
     headers = {
-            'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-            'accept-language': 'en-US,en;q=0.9',
-            'Accept-Encoding': 'gzip, deflate, br, zstd',
-            #'priority': 'u=0, i',
-            'Connection': 'keep-alive',
-            'Host': 'thrfive.io',
-            'referer': 'https://celebrityjest.com/',
-            'sec-ch-ua': '"Google Chrome";v="128", "Chromium";v="125", "Not.A/Brand";v="24"',
-            'sec-ch-ua-mobile': '?0',
-            'sec-ch-ua-platform': '"Windows"',
-            'sec-fetch-dest': 'iframe',
-            'sec-fetch-mode': 'navigate',
-            'sec-fetch-site': 'cross-site',
-            'upgrade-insecure-requests': '1',
-            'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
-        }
-    response = requests.get(url, headers=headers)
-    data = response.text
-    reg = '<script type="application\/javascript">(.*?)<\/script>'
-    code = re.compile(reg).findall(data)
-    temp = unjuice2.run(code[0]) 
-    reg = 'mpegURL\",\"file\":\"(.*?)\"'
-    url =  re.compile(reg).findall(temp)
-    url = url[0].replace("\\","")
+        'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+        'accept-language': 'en-US,en;q=0.9',
+        'priority': 'u=0, i',
+        'referer': 'https://insighthubnews.com/',
+        'sec-ch-ua': '"Chromium";v="128", "Not;A=Brand";v="24", "Google Chrome";v="128"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-ch-ua-platform': '"Windows"',
+        'sec-fetch-dest': 'iframe',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'cross-site',
+        'upgrade-insecure-requests': '1',
+        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',
+    }
+
+    params = {
+        'autoplay': 'false',
+        'preload': 'false',
+    }
+
+    response = requests.get(url,headers=headers)
+    html = response.text
+    reg = 'meta property=\"og:image:secure_url\" content=\"(.*?)\\/thumbnail.jpg'
+    url1 = re.compile(reg).findall(html)
+    url1 = url1[0]
+    url2='/480p/video0.ts?v=0&resolution=480p&server='
+    reg = 'loadUrl\\(\"https://video-(.*?).mediadelivery.net/.drm/(.*?)/'
+    url3 = re.compile(reg).findall(html)
+    url3,url5 = url3[0]
+    url4 = '&contextId='
+    url = url1+url2+url3+url4+url5
     return url

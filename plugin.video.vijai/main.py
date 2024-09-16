@@ -7,7 +7,7 @@ from xbmcgui import ListItem, Dialog
 from xbmcplugin import addDirectoryItem, endOfDirectory, setResolvedUrl
 import urllib.request, urllib.error, urllib.parse,urllib.request,urllib.parse,urllib.error,re,requests
 import resolveurl as urlresolver
-from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay, vcdnlare, directlinktx, filelinkzr,viralweb8, thrfiveio
+from lib import vidmx, chromevideo, embedtamilgun, vidorgnet, videobin, vupload, gofile, streamtape,etcscrs,arivakam, playallu, myfeminist, sendcm, downscrs,vembx, downlscr, downlsr, embedicu, watchlinkx, tamildhool, geodailymotion, vidplay, vcdnlare, directlinktx, filelinkzr,viralweb8, thrfiveio, mediadelivery
 import json,os,xbmcvfs
 from six.moves.html_parser import HTMLParser
 import xbmc
@@ -255,63 +255,66 @@ def liststreamurl(url,get_stream_url_regex):
                                     addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,url), ListItem(title),True)
                 else:
                     for key, value in list(item.items()):
+                        #web_pdb.set_trace()
                         if "tamildhool_url" in key:
-                            if "insighthubnews" in value:
-                                url = urllib.parse.unquote_plus(value)
-                                reg ='<noscript><iframe style=\"(.*?)\"\sframeborder=\"0\"\stype=\"(.*?)\" src=\"(?P<streamurl>(.|\n)*?)\"'
-                                data = getdatacontent_dict(url,reg)
-                                source = "tamildhool"
-                                for item in data:
-                                    if 'dailymotion' in item['streamurl']:
-                                        url = item['streamurl']
-                                        url = url.split('\n')
-                                        url = url[0]
-                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('dailymotion'),True)
-                            if "globalnewsphere" in value:
-                                #web_pdb.set_trace()
-                                url = urllib.parse.unquote_plus(value)
-                                reg ='iframe style=\"(.*?)\" frameborder=\"0\" type=\"(.*?)\" src=\"(?P<streamurl>(.|\n)*?)\"'
-                                data = getdatacontent_dict(url,reg)
-                                source = "tamildhool"
-                                for item in data:
-                                    if 'thrfive.io' in item['streamurl']:
-                                        #web_pdb.set_trace()
-                                        url = item['streamurl']
-                                        url = url.replace('\n','')
-                                        headers = {
-                                                'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
-                                                'accept-language': 'en-US,en;q=0.9',
-                                                #'priority': 'u=0, i',
-                                                #'Connection': 'keep-alive',
-                                                #'Host': 'thrfive.io',
-                                                'referer': 'https://globalnewsphere.com/',
-                                                #'sec-ch-ua': '"Google Chrome";v="128", "Chromium";v="125", "Not.A/Brand";v="24"',
-                                                #'sec-ch-ua-mobile': '?0',
-                                                # 'sec-ch-ua-platform': '"Windows"',
-                                                # 'sec-fetch-dest': 'iframe',
-                                                # 'sec-fetch-mode': 'navigate',
-                                                # 'sec-fetch-site': 'cross-site',
-                                                # 'upgrade-insecure-requests': '1',
-                                                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
-                                            }
-                                        response = requests.get(url, headers=headers)
-                                        data = response.text
-                                        reg = '<script type="application\/javascript">(.*?)<\/script>'
-                                        code = re.compile(reg).findall(data)
-                                        temp = unjuice2.run(code[0]) 
-                                        reg = 'mpegURL\",\"file\":\"(.*?)\"'
-                                        url =  re.compile(reg).findall(temp)
-                                        url = url[0].replace("\\","")
-                                        play_item = ListItem('click to play the link')
-                                        play_item.setInfo( type="Video", infoLabels=None)
-                                        play_item.setProperty('IsPlayable', 'true')
-                                        addDirectoryItem(plugin.handle,url=url,listitem=play_item,isFolder=False)
-                                        #addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('thrfive.io'),True)
-                                    if 'dailymotion' in item['streamurl']:
-                                        url = item['streamurl']
-                                        url = url.split('\n')
-                                        url = url[0]
-                                        addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('dailymotion'),True)
+                            if ("insighthubnews" in value) or ("globalnewsphere" in value) or ("celebrityjest" in value):
+                                reg = '<iframe.+?src="([^"]+)'
+                                streamurl = urllib.parse.unquote_plus(value)
+                                data = getdatacontent(streamurl,reg)
+                                source = value
+                                if data:
+                                    streamurl = data[0]
+                                    title = streamurl.split('/')
+                                    title = title[2]+'-Link'
+                                    streamurl = streamurl.replace('\n','')
+                                    streamurl = urllib.parse.quote_plus(streamurl)
+                                    source = urllib.parse.quote_plus(source)
+                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,source), ListItem(title),True)
+                            # if "globalnewsphere" in value:
+                            #     #web_pdb.set_trace()
+                            #     url = urllib.parse.unquote_plus(value)
+                            #     reg ='iframe style=\"(.*?)\" frameborder=\"0\" type=\"(.*?)\" src=\"(?P<streamurl>(.|\n)*?)\"'
+                            #     data = getdatacontent_dict(url,reg)
+                            #     source = "tamildhool"
+                            #     for item in data:
+                            #         if 'thrfive.io' in item['streamurl']:
+                            #             #web_pdb.set_trace()
+                            #             url = item['streamurl']
+                            #             url = url.replace('\n','')
+                            #             headers = {
+                            #                     'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',
+                            #                     'accept-language': 'en-US,en;q=0.9',
+                            #                     #'priority': 'u=0, i',
+                            #                     #'Connection': 'keep-alive',
+                            #                     #'Host': 'thrfive.io',
+                            #                     'referer': 'https://globalnewsphere.com/',
+                            #                     #'sec-ch-ua': '"Google Chrome";v="128", "Chromium";v="125", "Not.A/Brand";v="24"',
+                            #                     #'sec-ch-ua-mobile': '?0',
+                            #                     # 'sec-ch-ua-platform': '"Windows"',
+                            #                     # 'sec-fetch-dest': 'iframe',
+                            #                     # 'sec-fetch-mode': 'navigate',
+                            #                     # 'sec-fetch-site': 'cross-site',
+                            #                     # 'upgrade-insecure-requests': '1',
+                            #                     'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
+                            #                 }
+                            #             response = requests.get(url, headers=headers)
+                            #             data = response.text
+                            #             reg = '<script type="application\/javascript">(.*?)<\/script>'
+                            #             code = re.compile(reg).findall(data)
+                            #             temp = unjuice2.run(code[0]) 
+                            #             reg = 'mpegURL\",\"file\":\"(.*?)\"'
+                            #             url =  re.compile(reg).findall(temp)
+                            #             url = url[0].replace("\\","")
+                            #             play_item = ListItem('click to play the link')
+                            #             play_item.setInfo( type="Video", infoLabels=None)
+                            #             play_item.setProperty('IsPlayable', 'true')
+                            #             addDirectoryItem(plugin.handle,url=url,listitem=play_item,isFolder=False)
+                            #             #addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('thrfive.io'),True)
+                            #         if 'dailymotion' in item['streamurl']:
+                            #             url = item['streamurl']
+                            #             url = url.split('\n')
+                            #             url = url[0]
+                            #             addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,url,source), ListItem('dailymotion'),True)
                         if "hindilinks4u_streamurl" in key:
                             if 'membed.net'in value:
                                 if value:
@@ -493,6 +496,12 @@ def resolvelink(url,source):
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'thrfive' in url:
         movieurl = thrfiveio.resolve_thrfiveio(url,source)
+        try:
+            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+        except:
+            Dialog().ok('XBMC', 'Unable to locate video')
+    elif 'mediadelivery' in url:
+        movieurl = mediadelivery.resolve_mediadelivery(url,source)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
