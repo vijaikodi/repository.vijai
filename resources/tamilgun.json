@@ -3,7 +3,7 @@
 "url": "https://tamilgun.group/video/",
 "title": "TamilGun-Latest",
 "content_type":"Normal",
-"get_site_content_regex": "data-post-id=\\\"(.*?)\\\"\\sdata-post-type=\\\"vidmov_video\\\"\\shref=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\><img\\swidth=\\\"(.*?)\\\"\\sheight=\\\"(.*?)\\\"\\ssrc=\\\"(.*?)\\\" class=\\\"(.*?)\\\" alt=\\\"(.*?)\\\" decoding=\\\"(.*?)\\\"(|(fetchpriority=\\\"(.*?)\\\")) data-lazy-srcset=\\\"(.*?)\\\" data-lazy-sizes=\\\"(.*?)\\\" data-lazy-src=\\\"(?P<poster>.*?)\\\"",
+"get_site_content_regex": "data-post-id=\\\"(.*?)\\\"\\sdata-post-type=\\\"vidmov_video\\\"\\shref=\\\"(?P<pageurl>.*?)\\\"\\stitle=\\\"(?P<title>.*?)\\\"\\sclass=\\\"(.*?)\\\"\\><img\\sloading=\\\"(.*?)\\\"\\swidth=\\\"(.*?)\\\"\\sheight=\\\"(.*?)\\\"\\ssrc=\\\"(?P<poster>.*?)\\\"",
 "get_stream_url_regex": "unescape\\(\\'(?P<unescape>[^\\']+)|<(iframe|IFRAME)(\\s|.*?)(src|SRC)=\\\"(?P<tamilgun_streamurl>.*?)\\\"|onclick=\\\"window\\.open\\(\\'(?P<tamilgun_streamurl1>.*?)\\'|sources:\\s+\\[{\\\"file\\\":\\\"(?P<tamilgun_streamurl2>.*?)\\\"}\\]|iframe\\swidth=\\\\\"(.*?)\\\"\\sheight=\\\\\"(.*?)\\\"\\ssrc=\\\\\"(?P<tamilgun_streamurl3>.*?)\\\"|beeteam\\d+_video_source\\\":\\\"(?P<tamilgun_streamurl4>.*?)\\\"|\\\"video_url_preview\\\":\\\"(?P<tamilgun_streamurl5>.*?)\\\"",
 "get_nav_data_regex": "a\\sclass=\\\"nextpostslink\\\"\\srel=\\\"next\\\"\\saria-label=\\\"Next Page\\\"\\shref=\\\"(?P<navlink>.*?)\\\""
 },
