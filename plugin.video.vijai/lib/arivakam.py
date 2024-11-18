@@ -5,6 +5,7 @@ from lib import playallu
 from xbmcgui import ListItem, Dialog
 import web_pdb
 import resolveurl as urlresolver
+from lib import playallu
 
 def getcontent(url):
     proxy_handler = urllib.request.ProxyHandler({})
@@ -39,6 +40,7 @@ def getredirectedurl(url):
         Dialog().ok('XBMC', str(e))
 
 def resolve_arivakam(url,source):
+    streamurl = []
     #web_pdb.set_trace()
     ##Player3.arivakam.net
     id = url.split('/')
@@ -59,8 +61,15 @@ def resolve_arivakam(url,source):
     reg = '\"urlStream\":\"(.*?)\"'
     data = re.compile(reg).findall(data)
     if data:
-        streamurl = data[0]
-        streamurl = streamurl.strip()
+        for link in data:
+            if "playallu" in link:
+                link = playallu.resolve_playallu(link,url)
+                #web_pdb.set_trace()
+                link = urllib.parse.unquote_plus(link)
+                streamurl.append(link)
+            else:
+                streamurl.append(link)
+    if streamurl:
         return streamurl
     else:
         return None

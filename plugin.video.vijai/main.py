@@ -103,7 +103,7 @@ def jimkimble_redirectedurl(url):
     return(final_redirect_url)
 
 def loadmainlist(url,title,get_site_content_regex,get_stream_url_regex,get_nav_data_regex):
-    url = getredirectedurl(url)
+    #url = getredirectedurl(url)
     get_site_content_regex = urllib.parse.quote_plus(get_site_content_regex)
     get_stream_url_regex = urllib.parse.quote_plus(get_stream_url_regex)
     get_nav_data_regex = urllib.parse.quote_plus(get_nav_data_regex)
@@ -183,6 +183,7 @@ def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_
     get_site_content_regex = urllib.parse.unquote_plus(get_site_content_regex)
     get_nav_data_regex = urllib.parse.unquote_plus(get_nav_data_regex)
     data = getdatacontent_dict(url,get_site_content_regex)
+    #web_pdb.set_trace()
     nav = getdatacontent_dict(url,get_nav_data_regex)
     for item in data:
         #web_pdb.set_trace()
@@ -415,7 +416,17 @@ def resolvelink(url,source):
             url = url[:-1]
         movieurl = arivakam.resolve_arivakam(url,source)
         try:
-            addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
+            if type(movieurl) is list:
+                for item in movieurl:
+                    title = urllib.parse.urlparse(item).netloc
+                    play_item = ListItem(title)
+                    url = urllib.parse.unquote_plus(item)
+                    addDirectoryItem(plugin.handle,url=url,listitem=play_item,isFolder=False)
+            else:
+                title = urllib.parse.urlparse(movieurl).netloc
+                play_item = ListItem(title)
+                url = movieurl
+                addDirectoryItem(plugin.handle,url=url,listitem=play_item,isFolder=False)
         except:
             Dialog().ok('XBMC', 'Unable to locate video')
     elif 'viralweb8' in url:
@@ -516,7 +527,7 @@ def resolvelink(url,source):
     elif 'playallu' in url:
         if 'tamilgun' in source:
             url = url.replace('\/','/')
-        movieurl = playallu.resolve_playallu(url)
+        movieurl = playallu.resolve_playallu(url,source)
         try:
             addDirectoryItem(plugin.handle,url=movieurl,listitem=play_item,isFolder=False)
         except:
