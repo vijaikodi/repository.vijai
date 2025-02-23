@@ -178,8 +178,10 @@ def listsites(url,title):
 
 @plugin.route('/getsitecontent/<path:url>/<get_site_content_regex>/<get_nav_data_regex>/<get_stream_url_regex>')
 def getsitecontent(url,get_site_content_regex,get_nav_data_regex,get_stream_url_regex):
+    #web_pdb.set_trace()
     url = urllib.parse.unquote_plus(url)
-    url = getredirectedurl(url)
+    if "tamildhool" not in url:
+        url = getredirectedurl(url)
     get_site_content_regex = urllib.parse.unquote_plus(get_site_content_regex)
     get_nav_data_regex = urllib.parse.unquote_plus(get_nav_data_regex)
     data = getdatacontent_dict(url,get_site_content_regex)
@@ -258,19 +260,19 @@ def liststreamurl(url,get_stream_url_regex):
                     for key, value in list(item.items()):
                         #web_pdb.set_trace()
                         if "tamildhool_url" in key:
-                            if ("insighthubnews" in value) or ("globalnewsphere" in value) or ("celebrityjest" in value):
-                                reg = '<iframe.+?src="([^"]+)'
-                                streamurl = urllib.parse.unquote_plus(value)
-                                data = getdatacontent(streamurl,reg)
-                                source = value
-                                if data:
-                                    streamurl = data[0]
-                                    title = streamurl.split('/')
-                                    title = title[2]+'-Link'
-                                    streamurl = streamurl.replace('\n','')
-                                    streamurl = urllib.parse.quote_plus(streamurl)
-                                    source = urllib.parse.quote_plus(source)
-                                    addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,source), ListItem(title),True)
+                        #if ("insighthubnews" in value) or ("globalnewsphere" in value) or ("celebrityjest" in value):
+                            reg = '<iframe.+?\s+src="([^"]+)'
+                            streamurl = urllib.parse.unquote_plus(value)
+                            data = getdatacontent(streamurl,reg)
+                            source = value
+                            if data:
+                                streamurl = data[0]
+                                title = streamurl.split('/')
+                                title = title[2]+'-Link'
+                                streamurl = streamurl.replace('\n','')
+                                streamurl = urllib.parse.quote_plus(streamurl)
+                                source = urllib.parse.quote_plus(source)
+                                addDirectoryItem(plugin.handle,plugin.url_for(resolvelink,streamurl,source), ListItem(title),True)
                             # if "globalnewsphere" in value:
                             #     #web_pdb.set_trace()
                             #     url = urllib.parse.unquote_plus(value)
